@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify
 import face_recognition
 import numpy as np
@@ -5,6 +6,7 @@ import base64
 import cv2
 import json
 import os
+
 
 app = Flask(__name__)
 
@@ -22,6 +24,15 @@ def load_known_faces():
             return data
     return {}
 
+def remove_all_temp_encodings():
+    """Remove todos os encodings temporários (prefixo temp_) do arquivo JSON."""
+    known_faces = load_known_faces()
+    temp_ids = [sid for sid in known_faces if str(sid).startswith('temp_')]
+    for tid in temp_ids:
+        del known_faces[tid]
+    save_known_faces(known_faces)
+    return len(temp_ids)
+
 def save_known_faces(known_faces):
     """Salva encodings de faces conhecidas no arquivo JSON"""
     data = {}
@@ -32,6 +43,28 @@ def save_known_faces(known_faces):
         }
     with open(ENCODINGS_FILE, 'w') as f:
         json.dump(data, f)
+
+@app.route('/remove-temp', methods=['POST'])
+def remove_temp():
+    """
+    Remove encoding temporário (com prefixo temp_) do arquivo JSON.
+    Espera: temp_id (string)
+    """
+    try:
+        data = request.json
+        temp_id = data.get('temp_id')
+        if not temp_id or not temp_id.startswith('temp_'):
+            return jsonify({'error': 'temp_id inválido'}), 400
+        known_faces = load_known_faces()
+        if temp_id in known_faces:
+            del known_faces[temp_id]
+            save_known_faces(known_faces)
+            return jsonify({'success': True, 'message': f'Encoding temporário {temp_id} removido.'})
+        else:
+            return jsonify({'success': False, 'message': 'Encoding temporário não encontrado.'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -66,12 +99,17 @@ def register():
         face_encodings = face_recognition.face_encodings(rgb_image, face_locations)
         face_encoding = face_encodings[0]
         
-        # Carrega faces conhecidas e adiciona nova
+
+        # Carrega faces conhecidas e sobrescreve/atualiza encoding
         known_faces = load_known_faces()
         known_faces[student_id] = {
             'name': name,
             'encoding': face_encoding
         }
+        # Remove encodings temporários relacionados ao mesmo nome
+        temp_ids = [sid for sid in known_faces if str(sid).startswith('temp_') and known_faces[sid]['name'] == name]
+        for tid in temp_ids:
+            del known_faces[tid]
         save_known_faces(known_faces)
         
         return jsonify({

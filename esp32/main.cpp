@@ -9,9 +9,9 @@
 #include "esp_camera.h"
 
 // --- Configurações Wi-Fi e MQTT ---
-#define WIFI_SSID       "Theo"
-#define WIFI_PASSWORD   "laudo1234"
-#define MQTT_SERVER     "172.20.10.11"  // IP do broker (SEM ESPAÇOS!)
+#define WIFI_SSID       "VIVOFIBRA-D126"
+#define WIFI_PASSWORD   "mJEce8o2fr"
+#define MQTT_SERVER     "192.168.15.36"  // IP do broker (SEM ESPAÇOS!)
 #define MQTT_PORT       1883
 #define MQTT_USER       ""  // Deixe vazio se allow_anonymous true
 #define MQTT_PASSWORD   ""

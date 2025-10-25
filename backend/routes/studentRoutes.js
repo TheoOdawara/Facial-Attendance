@@ -3,6 +3,22 @@ const db = require('../services/dbService');
 const router = express.Router();
 
 /**
+ * @route GET /api/students
+ * @description Lista todos os alunos cadastrados.
+ * @access Public
+ */
+router.get('/students', async (req, res) => {
+  try {
+    const sql = 'SELECT id, name, registration_number, created_at FROM students ORDER BY created_at DESC';
+    const result = await db.query(sql);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Erro ao listar alunos:', err);
+    res.status(500).json({ error: 'Erro ao listar alunos.' });
+  }
+});
+
+/**
  * @route POST /api/students
  * @description Registra um novo aluno no sistema.
  * @access Public
@@ -13,9 +29,12 @@ const router = express.Router();
  * @param {object} res - O objeto da resposta Express.
  */
 router.post('/students', async (req, res) => {
+
+  console.log('Recebido em /api/students:', req.body);
   const { name, registrationNumber, faceEncoding } = req.body;
 
   if (!name || !registrationNumber || !faceEncoding) {
+    console.error('❌ Cadastro inválido:', { name, registrationNumber, faceEncoding });
     return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
   }
 
@@ -24,11 +43,13 @@ router.post('/students', async (req, res) => {
     console.log(`📸 Registrando face para: ${name}`);
     const axios = require('axios');
     
-    let studentId;
+    // Gera ID temporário único
+    const tempId = 'temp_' + Date.now();
+    
     try {
       // Registra no Python ANTES de salvar no banco
       const faceResponse = await axios.post('http://faceapi:5000/register', {
-        student_id: 'temp_' + Date.now(), // ID temporário
+        student_id: tempId,
         name: name,
         image: faceEncoding
       });
@@ -63,8 +84,14 @@ router.post('/students', async (req, res) => {
         image: faceEncoding
       });
       console.log(`✓ Face registrada no sistema de reconhecimento com ID: ${student.id}`);
+
+      // Remove encoding temporário usando o mesmo ID gerado anteriormente
+      await axios.post('http://faceapi:5000/remove-temp', {
+        temp_id: tempId
+      });
+      console.log(`✓ Encoding temporário ${tempId} removido do sistema de reconhecimento`);
     } catch (updateErr) {
-      console.error('⚠️ Erro ao atualizar ID no sistema de reconhecimento:', updateErr.message);
+      console.error('⚠️ Erro ao atualizar ID ou remover temp no sistema de reconhecimento:', updateErr.message);
     }
 
     res.status(201).json(result.rows[0]);
