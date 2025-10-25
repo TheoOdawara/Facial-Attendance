@@ -1,0 +1,101 @@
+# FacialAttendance .gitignore
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+
+# dotenv
+.env
+.env.*
+
+# Docker
+*.pid
+docker-compose.override.yml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+*.venv
+venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PostgreSQL
+*.sql
+pgdata/
+
+# Face encodings
+face_encodings.json
+
+# Build
+build/
+dist/
+
+# ESP32
+*.bin
+*.elf
+*.hex
+
+# Misc
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Coverage
+coverage/
+*.lcov
+
+# Test
+junit.xml
+
+# Others
+.idea/
+*.iml
+
+# Ignore database dumps/backups
+*.dump
+*.backup
+
+# Ignore MQTT temp files
+mosquitto/data/
+mosquitto/log/
+
+# Ignore images/captures
+captures/
+images/
+
+# Ignore frontend build
+frontend/build/
+
+# Ignore backend temp
+backend/tmp/
+
+# Ignore python virtualenvs
+facialenv/
+
+# Ignore Windows specific
+*.exe
+*.dll
+*.obj
+*.pdb
+
+# Ignore PowerShell history
+*.pshistory

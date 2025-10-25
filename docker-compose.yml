@@ -1,0 +1,78 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    container_name: facial_backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+      - mqtt
+    networks:
+      - facialnet
+
+  frontend:
+    build: ./frontend
+    container_name: facial_frontend
+    restart: always
+    env_file:
+      - ./frontend/.env
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - facialnet
+
+  db:
+    image: postgres:15
+    container_name: facial_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: facialuser
+      POSTGRES_PASSWORD: facialpass
+      POSTGRES_DB: facialdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - facialnet
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: facial_mqtt
+    restart: always
+    ports:
+      - "0.0.0.0:1883:1883"
+      - "0.0.0.0:9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - mqtt_data:/mosquitto/data
+      - mqtt_log:/mosquitto/log
+    networks:
+      - facialnet
+
+  faceapi:
+    build: ./faceapi
+    container_name: facial_faceapi
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./faceapi:/app
+    networks:
+      - facialnet
+
+volumes:
+  pgdata:
+  mqtt_data:
+  mqtt_log:
+
+networks:
+  facialnet:
+    driver: bridge

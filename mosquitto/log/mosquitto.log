@@ -1,0 +1,911 @@
+1761324998: mosquitto version 2.0.22 starting
+1761324998: Config loaded from /mosquitto/config/mosquitto.conf.
+1761324998: Loading plugin: /usr/lib/mosquitto_dynamic_security.so
+1761324998: Warning: Dynamic security plugin has no plugin_opt_config_file defined. The plugin will not be activated.
+1761324998: Error: Unable to open pwfile "/mosquitto/config/passwd".
+1761324998: Error opening password file "/mosquitto/config/passwd".
+1761325034: mosquitto version 2.0.22 starting
+1761325034: Config loaded from /mosquitto/config/mosquitto.conf.
+1761325034: Loading plugin: /usr/lib/mosquitto_dynamic_security.so
+1761325034: Warning: Dynamic security plugin has no plugin_opt_config_file defined. The plugin will not be activated.
+1761325034: Error: Unable to open pwfile "/mosquitto/config/passwd".
+1761325034: Error opening password file "/mosquitto/config/passwd".
+1761325035: mosquitto version 2.0.22 starting
+1761325035: Config loaded from /mosquitto/config/mosquitto.conf.
+1761325035: Loading plugin: /usr/lib/mosquitto_dynamic_security.so
+1761325035: Warning: Dynamic security plugin has no plugin_opt_config_file defined. The plugin will not be activated.
+1761325035: Error: Unable to open pwfile "/mosquitto/config/passwd".
+1761325035: Error opening password file "/mosquitto/config/passwd".
+1761325036: mosquitto version 2.0.22 starting
+1761325036: Config loaded from /mosquitto/config/mosquitto.conf.
+1761325036: Loading plugin: /usr/lib/mosquitto_dynamic_security.so
+1761325036: Warning: Dynamic security plugin has no plugin_opt_config_file defined. The plugin will not be activated.
+1761325036: Error: Unable to open pwfile "/mosquitto/config/passwd".
+1761325036: Error opening password file "/mosquitto/config/passwd".
+1761325037: mosquitto version 2.0.22 starting
+1761325037: Config loaded from /mosquitto/config/mosquitto.conf.
+1761325037: Loading plugin: /usr/lib/mosquitto_dynamic_security.so
+1761325037: Warning: Dynamic security plugin has no plugin_opt_config_file defined. The plugin will not be activated.
+1761325037: Error: Unable to open pwfile "/mosquitto/config/passwd".
+1761325037: Error opening password file "/mosquitto/config/passwd".
+1761325038: mosquitto version 2.0.22 starting
+1761325038: Config loaded from /mosquitto/config/mosquitto.conf.
+1761325038: Loading plugin: /usr/lib/mosquitto_dynamic_security.so
+1761325038: Warning: Dynamic security plugin has no plugin_opt_config_file defined. The plugin will not be activated.
+1761325038: Error: Unable to open pwfile "/mosquitto/config/passwd".
+1761325038: Error opening password file "/mosquitto/config/passwd".
+1761325040: mosquitto version 2.0.22 starting
+1761325040: Config loaded from /mosquitto/config/mosquitto.conf.
+1761325040: Loading plugin: /usr/lib/mosquitto_dynamic_security.so
+1761325040: Warning: Dynamic security plugin has no plugin_opt_config_file defined. The plugin will not be activated.
+1761325040: Error: Unable to open pwfile "/mosquitto/config/passwd".
+1761325040: Error opening password file "/mosquitto/config/passwd".
+1761325044: mosquitto version 2.0.22 starting
+1761325044: Config loaded from /mosquitto/config/mosquitto.conf.
+1761325044: Loading plugin: /usr/lib/mosquitto_dynamic_security.so
+1761325044: Warning: Dynamic security plugin has no plugin_opt_config_file defined. The plugin will not be activated.
+1761325044: Error: Unable to open pwfile "/mosquitto/config/passwd".
+1761325044: Error opening password file "/mosquitto/config/passwd".
+1761325051: mosquitto version 2.0.22 starting
+1761325051: Config loaded from /mosquitto/config/mosquitto.conf.
+1761325051: Loading plugin: /usr/lib/mosquitto_dynamic_security.so
+1761325051: Warning: Dynamic security plugin has no plugin_opt_config_file defined. The plugin will not be activated.
+1761325051: Error: Unable to open pwfile "/mosquitto/config/passwd".
+1761325051: Error opening password file "/mosquitto/config/passwd".
+1761325064: mosquitto version 2.0.22 starting
+1761325064: Config loaded from /mosquitto/config/mosquitto.conf.
+1761325064: Loading plugin: /usr/lib/mosquitto_dynamic_security.so
+1761325064: Warning: Dynamic security plugin has no plugin_opt_config_file defined. The plugin will not be activated.
+1761325064: Error: Unable to open pwfile "/mosquitto/config/passwd".
+1761325064: Error opening password file "/mosquitto/config/passwd".
+1761325745: mosquitto version 2.0.22 starting
+1761325745: Config loaded from /mosquitto/config/mosquitto.conf.
+1761325745: Opening ipv4 listen socket on port 1883.
+1761325745: Opening ipv6 listen socket on port 1883.
+1761325745: mosquitto version 2.0.22 running
+1761326079: mosquitto version 2.0.22 terminating
+1761326079: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761326093: mosquitto version 2.0.22 starting
+1761326093: Config loaded from /mosquitto/config/mosquitto.conf.
+1761326093: Opening ipv4 listen socket on port 1883.
+1761326093: Opening ipv6 listen socket on port 1883.
+1761326093: mosquitto version 2.0.22 running
+1761326942: mosquitto version 2.0.22 terminating
+1761326942: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761326973: mosquitto version 2.0.22 starting
+1761326973: Config loaded from /mosquitto/config/mosquitto.conf.
+1761326973: Opening ipv4 listen socket on port 1883.
+1761326973: Opening ipv6 listen socket on port 1883.
+1761326973: mosquitto version 2.0.22 running
+1761326974: New connection from 172.18.0.4:60180 on port 1883.
+1761326974: New client connected from 172.18.0.4:60180 as mqttjs_ec48b4e5 (p2, c1, k60, u'facialmqtt').
+1761326974: No will message specified.
+1761326974: Sending CONNACK to mqttjs_ec48b4e5 (0, 0)
+1761326974: Received SUBSCRIBE from mqttjs_ec48b4e5
+1761326974: 	facial/attendance/image (QoS 0)
+1761326974: mqttjs_ec48b4e5 0 facial/attendance/image
+1761326974: Sending SUBACK to mqttjs_ec48b4e5
+1761327023: Client mqttjs_ec48b4e5 closed its connection.
+1761327024: mosquitto version 2.0.22 terminating
+1761327024: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761327066: mosquitto version 2.0.22 starting
+1761327066: Config loaded from /mosquitto/config/mosquitto.conf.
+1761327066: Opening ipv4 listen socket on port 1883.
+1761327066: Opening ipv6 listen socket on port 1883.
+1761327066: mosquitto version 2.0.22 running
+1761327067: New connection from 172.18.0.4:50378 on port 1883.
+1761327067: New client connected from 172.18.0.4:50378 as mqttjs_3e839030 (p2, c1, k60).
+1761327067: No will message specified.
+1761327067: Sending CONNACK to mqttjs_3e839030 (0, 0)
+1761327067: Received SUBSCRIBE from mqttjs_3e839030
+1761327067: 	facial/attendance/image (QoS 0)
+1761327067: mqttjs_3e839030 0 facial/attendance/image
+1761327067: Sending SUBACK to mqttjs_3e839030
+1761327127: Received PINGREQ from mqttjs_3e839030
+1761327127: Sending PINGRESP to mqttjs_3e839030
+1761327141: Received PUBLISH from mqttjs_3e839030 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761327187: Received PINGREQ from mqttjs_3e839030
+1761327187: Sending PINGRESP to mqttjs_3e839030
+1761327247: Received PINGREQ from mqttjs_3e839030
+1761327247: Sending PINGRESP to mqttjs_3e839030
+1761327249: Client mqttjs_3e839030 closed its connection.
+1761327250: mosquitto version 2.0.22 terminating
+1761327250: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761327276: mosquitto version 2.0.22 starting
+1761327276: Config loaded from /mosquitto/config/mosquitto.conf.
+1761327276: Opening ipv4 listen socket on port 1883.
+1761327276: Opening ipv6 listen socket on port 1883.
+1761327276: mosquitto version 2.0.22 running
+1761327277: New connection from 172.18.0.4:35782 on port 1883.
+1761327277: New client connected from 172.18.0.4:35782 as mqttjs_fd93ad70 (p2, c1, k60).
+1761327277: No will message specified.
+1761327277: Sending CONNACK to mqttjs_fd93ad70 (0, 0)
+1761327277: Received SUBSCRIBE from mqttjs_fd93ad70
+1761327277: 	facial/attendance/image (QoS 0)
+1761327277: mqttjs_fd93ad70 0 facial/attendance/image
+1761327277: Sending SUBACK to mqttjs_fd93ad70
+1761327337: Received PINGREQ from mqttjs_fd93ad70
+1761327337: Sending PINGRESP to mqttjs_fd93ad70
+1761327397: Received PINGREQ from mqttjs_fd93ad70
+1761327397: Sending PINGRESP to mqttjs_fd93ad70
+1761327418: Client mqttjs_fd93ad70 closed its connection.
+1761327419: mosquitto version 2.0.22 terminating
+1761327419: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761327439: mosquitto version 2.0.22 starting
+1761327439: Config loaded from /mosquitto/config/mosquitto.conf.
+1761327439: Opening ipv4 listen socket on port 1883.
+1761327439: Opening ipv6 listen socket on port 1883.
+1761327439: mosquitto version 2.0.22 running
+1761327440: New connection from 172.18.0.4:42096 on port 1883.
+1761327440: New client connected from 172.18.0.4:42096 as mqttjs_836dca75 (p2, c1, k60).
+1761327440: No will message specified.
+1761327440: Sending CONNACK to mqttjs_836dca75 (0, 0)
+1761327440: Received SUBSCRIBE from mqttjs_836dca75
+1761327440: 	facial/attendance/image (QoS 0)
+1761327440: mqttjs_836dca75 0 facial/attendance/image
+1761327440: Sending SUBACK to mqttjs_836dca75
+1761327484: Received PUBLISH from mqttjs_836dca75 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761327500: Received PINGREQ from mqttjs_836dca75
+1761327500: Sending PINGRESP to mqttjs_836dca75
+1761327560: Received PINGREQ from mqttjs_836dca75
+1761327560: Sending PINGRESP to mqttjs_836dca75
+1761327620: Received PINGREQ from mqttjs_836dca75
+1761327620: Sending PINGRESP to mqttjs_836dca75
+1761327680: Received PINGREQ from mqttjs_836dca75
+1761327680: Sending PINGRESP to mqttjs_836dca75
+1761327740: Received PINGREQ from mqttjs_836dca75
+1761327740: Sending PINGRESP to mqttjs_836dca75
+1761327800: Received PINGREQ from mqttjs_836dca75
+1761327800: Sending PINGRESP to mqttjs_836dca75
+1761327861: Received PINGREQ from mqttjs_836dca75
+1761327861: Sending PINGRESP to mqttjs_836dca75
+1761327921: Received PINGREQ from mqttjs_836dca75
+1761327921: Sending PINGRESP to mqttjs_836dca75
+1761327921: Received PUBLISH from mqttjs_836dca75 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761327981: Received PINGREQ from mqttjs_836dca75
+1761327981: Sending PINGRESP to mqttjs_836dca75
+1761328008: New connection from 172.18.0.1:60908 on port 1883.
+1761328008: New client connected from 172.18.0.1:60908 as esp32cam-client (p2, c1, k15).
+1761328008: No will message specified.
+1761328008: Sending CONNACK to esp32cam-client (0, 0)
+1761328008: Received SUBSCRIBE from esp32cam-client
+1761328008: 	facial/attendance/capture (QoS 0)
+1761328008: esp32cam-client 0 facial/attendance/capture
+1761328008: Sending SUBACK to esp32cam-client
+1761328014: Received PUBLISH from mqttjs_836dca75 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761328014: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761328023: Received PINGREQ from esp32cam-client
+1761328023: Sending PINGRESP to esp32cam-client
+1761328038: Received PINGREQ from esp32cam-client
+1761328038: Sending PINGRESP to esp32cam-client
+1761328041: Received PINGREQ from mqttjs_836dca75
+1761328041: Sending PINGRESP to mqttjs_836dca75
+1761328053: Received PINGREQ from esp32cam-client
+1761328053: Sending PINGRESP to esp32cam-client
+1761328068: Received PINGREQ from esp32cam-client
+1761328068: Sending PINGRESP to esp32cam-client
+1761328083: Received PINGREQ from esp32cam-client
+1761328083: Sending PINGRESP to esp32cam-client
+1761328098: Received PINGREQ from esp32cam-client
+1761328098: Sending PINGRESP to esp32cam-client
+1761328101: Received PINGREQ from mqttjs_836dca75
+1761328101: Sending PINGRESP to mqttjs_836dca75
+1761328113: Received PINGREQ from esp32cam-client
+1761328113: Sending PINGRESP to esp32cam-client
+1761328130: Received PINGREQ from esp32cam-client
+1761328130: Sending PINGRESP to esp32cam-client
+1761328143: Received PINGREQ from esp32cam-client
+1761328143: Sending PINGRESP to esp32cam-client
+1761328158: Received PINGREQ from esp32cam-client
+1761328158: Sending PINGRESP to esp32cam-client
+1761328161: Received PINGREQ from mqttjs_836dca75
+1761328161: Sending PINGRESP to mqttjs_836dca75
+1761328173: Received PINGREQ from esp32cam-client
+1761328173: Sending PINGRESP to esp32cam-client
+1761328188: Received PINGREQ from esp32cam-client
+1761328188: Sending PINGRESP to esp32cam-client
+1761328203: Received PINGREQ from esp32cam-client
+1761328203: Sending PINGRESP to esp32cam-client
+1761328218: Received PINGREQ from esp32cam-client
+1761328218: Sending PINGRESP to esp32cam-client
+1761328221: Received PINGREQ from mqttjs_836dca75
+1761328221: Sending PINGRESP to mqttjs_836dca75
+1761328233: Received PINGREQ from esp32cam-client
+1761328233: Sending PINGRESP to esp32cam-client
+1761328250: Received PINGREQ from esp32cam-client
+1761328250: Sending PINGRESP to esp32cam-client
+1761328263: Received PINGREQ from esp32cam-client
+1761328263: Sending PINGRESP to esp32cam-client
+1761328278: Received PINGREQ from esp32cam-client
+1761328278: Sending PINGRESP to esp32cam-client
+1761328281: Received PINGREQ from mqttjs_836dca75
+1761328281: Sending PINGRESP to mqttjs_836dca75
+1761328293: Received PINGREQ from esp32cam-client
+1761328293: Sending PINGRESP to esp32cam-client
+1761328310: Received PINGREQ from esp32cam-client
+1761328310: Sending PINGRESP to esp32cam-client
+1761328323: Received PINGREQ from esp32cam-client
+1761328323: Sending PINGRESP to esp32cam-client
+1761328338: Received PINGREQ from esp32cam-client
+1761328338: Sending PINGRESP to esp32cam-client
+1761328341: Received PINGREQ from mqttjs_836dca75
+1761328341: Sending PINGRESP to mqttjs_836dca75
+1761328353: Received PINGREQ from esp32cam-client
+1761328353: Sending PINGRESP to esp32cam-client
+1761328368: Received PINGREQ from esp32cam-client
+1761328368: Sending PINGRESP to esp32cam-client
+1761328383: Client esp32cam-client closed its connection.
+1761328386: New connection from 172.18.0.1:54850 on port 1883.
+1761328389: New client connected from 172.18.0.1:54850 as esp32cam-client (p2, c1, k15).
+1761328389: No will message specified.
+1761328389: Sending CONNACK to esp32cam-client (0, 0)
+1761328389: Received SUBSCRIBE from esp32cam-client
+1761328389: 	facial/attendance/capture (QoS 0)
+1761328389: esp32cam-client 0 facial/attendance/capture
+1761328389: Sending SUBACK to esp32cam-client
+1761328401: Received PINGREQ from mqttjs_836dca75
+1761328401: Sending PINGRESP to mqttjs_836dca75
+1761328404: Received PINGREQ from esp32cam-client
+1761328404: Sending PINGRESP to esp32cam-client
+1761328419: Received PINGREQ from esp32cam-client
+1761328419: Sending PINGRESP to esp32cam-client
+1761328434: Received PINGREQ from esp32cam-client
+1761328434: Sending PINGRESP to esp32cam-client
+1761328449: Received PINGREQ from esp32cam-client
+1761328449: Sending PINGRESP to esp32cam-client
+1761328461: Received PINGREQ from mqttjs_836dca75
+1761328461: Sending PINGRESP to mqttjs_836dca75
+1761328464: Received PINGREQ from esp32cam-client
+1761328464: Sending PINGRESP to esp32cam-client
+1761328479: Received PINGREQ from esp32cam-client
+1761328479: Sending PINGRESP to esp32cam-client
+1761328494: Received PINGREQ from esp32cam-client
+1761328494: Sending PINGRESP to esp32cam-client
+1761328509: Received PINGREQ from esp32cam-client
+1761328509: Sending PINGRESP to esp32cam-client
+1761328521: Received PINGREQ from mqttjs_836dca75
+1761328521: Sending PINGRESP to mqttjs_836dca75
+1761328524: Received PINGREQ from esp32cam-client
+1761328524: Sending PINGRESP to esp32cam-client
+1761328539: Received PINGREQ from esp32cam-client
+1761328539: Sending PINGRESP to esp32cam-client
+1761328554: Received PINGREQ from esp32cam-client
+1761328554: Sending PINGRESP to esp32cam-client
+1761328569: Received PINGREQ from esp32cam-client
+1761328569: Sending PINGRESP to esp32cam-client
+1761328581: Received PINGREQ from mqttjs_836dca75
+1761328581: Sending PINGRESP to mqttjs_836dca75
+1761328584: Received PINGREQ from esp32cam-client
+1761328584: Sending PINGRESP to esp32cam-client
+1761328599: Received PINGREQ from esp32cam-client
+1761328599: Sending PINGRESP to esp32cam-client
+1761328614: Received PINGREQ from esp32cam-client
+1761328614: Sending PINGRESP to esp32cam-client
+1761328629: Received PINGREQ from esp32cam-client
+1761328629: Sending PINGRESP to esp32cam-client
+1761328641: Received PINGREQ from mqttjs_836dca75
+1761328641: Sending PINGRESP to mqttjs_836dca75
+1761328644: Received PINGREQ from esp32cam-client
+1761328644: Sending PINGRESP to esp32cam-client
+1761328659: Received PINGREQ from esp32cam-client
+1761328659: Sending PINGRESP to esp32cam-client
+1761328674: Received PINGREQ from esp32cam-client
+1761328674: Sending PINGRESP to esp32cam-client
+1761328689: Received PINGREQ from esp32cam-client
+1761328689: Sending PINGRESP to esp32cam-client
+1761328701: Received PINGREQ from mqttjs_836dca75
+1761328701: Sending PINGRESP to mqttjs_836dca75
+1761328704: Received PINGREQ from esp32cam-client
+1761328704: Sending PINGRESP to esp32cam-client
+1761328719: Received PINGREQ from esp32cam-client
+1761328719: Sending PINGRESP to esp32cam-client
+1761328734: Received PINGREQ from esp32cam-client
+1761328734: Sending PINGRESP to esp32cam-client
+1761328749: Received PINGREQ from esp32cam-client
+1761328749: Sending PINGRESP to esp32cam-client
+1761328761: Received PINGREQ from mqttjs_836dca75
+1761328761: Sending PINGRESP to mqttjs_836dca75
+1761328764: Received PINGREQ from esp32cam-client
+1761328764: Sending PINGRESP to esp32cam-client
+1761328779: Received PINGREQ from esp32cam-client
+1761328779: Sending PINGRESP to esp32cam-client
+1761328794: Received PINGREQ from esp32cam-client
+1761328794: Sending PINGRESP to esp32cam-client
+1761328809: Received PINGREQ from esp32cam-client
+1761328809: Sending PINGRESP to esp32cam-client
+1761328821: Received PINGREQ from mqttjs_836dca75
+1761328821: Sending PINGRESP to mqttjs_836dca75
+1761328824: Received PINGREQ from esp32cam-client
+1761328824: Sending PINGRESP to esp32cam-client
+1761328839: Received PINGREQ from esp32cam-client
+1761328839: Sending PINGRESP to esp32cam-client
+1761328854: Received PINGREQ from esp32cam-client
+1761328854: Sending PINGRESP to esp32cam-client
+1761328869: Received PINGREQ from esp32cam-client
+1761328869: Sending PINGRESP to esp32cam-client
+1761328881: Received PINGREQ from mqttjs_836dca75
+1761328881: Sending PINGRESP to mqttjs_836dca75
+1761328884: Received PINGREQ from esp32cam-client
+1761328884: Sending PINGRESP to esp32cam-client
+1761328899: Received PINGREQ from esp32cam-client
+1761328899: Sending PINGRESP to esp32cam-client
+1761328914: Received PINGREQ from esp32cam-client
+1761328914: Sending PINGRESP to esp32cam-client
+1761328929: Received PINGREQ from esp32cam-client
+1761328929: Sending PINGRESP to esp32cam-client
+1761328942: Received PINGREQ from mqttjs_836dca75
+1761328942: Sending PINGRESP to mqttjs_836dca75
+1761328944: Received PINGREQ from esp32cam-client
+1761328944: Sending PINGRESP to esp32cam-client
+1761328959: Received PINGREQ from esp32cam-client
+1761328959: Sending PINGRESP to esp32cam-client
+1761328974: Received PINGREQ from esp32cam-client
+1761328974: Sending PINGRESP to esp32cam-client
+1761328989: Received PINGREQ from esp32cam-client
+1761328989: Sending PINGRESP to esp32cam-client
+1761329002: Received PINGREQ from mqttjs_836dca75
+1761329002: Sending PINGRESP to mqttjs_836dca75
+1761329004: Received PINGREQ from esp32cam-client
+1761329004: Sending PINGRESP to esp32cam-client
+1761329019: Received PINGREQ from esp32cam-client
+1761329019: Sending PINGRESP to esp32cam-client
+1761329026: Client mqttjs_836dca75 closed its connection.
+1761329026: mosquitto version 2.0.22 terminating
+1761329026: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761329231: mosquitto version 2.0.22 starting
+1761329231: Config loaded from /mosquitto/config/mosquitto.conf.
+1761329231: Opening ipv4 listen socket on port 1883.
+1761329231: Opening ipv6 listen socket on port 1883.
+1761329231: mosquitto version 2.0.22 running
+1761329232: New connection from 172.18.0.1:46280 on port 1883.
+1761329232: New client connected from 172.18.0.1:46280 as esp32cam-client (p2, c1, k15).
+1761329232: No will message specified.
+1761329232: Sending CONNACK to esp32cam-client (0, 0)
+1761329232: Received SUBSCRIBE from esp32cam-client
+1761329232: 	facial/attendance/capture (QoS 0)
+1761329232: esp32cam-client 0 facial/attendance/capture
+1761329232: Sending SUBACK to esp32cam-client
+1761329234: New connection from 172.18.0.4:43954 on port 1883.
+1761329234: New client connected from 172.18.0.4:43954 as mqttjs_722ddc8d (p2, c1, k60).
+1761329234: No will message specified.
+1761329234: Sending CONNACK to mqttjs_722ddc8d (0, 0)
+1761329234: Received SUBSCRIBE from mqttjs_722ddc8d
+1761329234: 	facial/attendance/image (QoS 0)
+1761329234: mqttjs_722ddc8d 0 facial/attendance/image
+1761329234: Sending SUBACK to mqttjs_722ddc8d
+1761329247: Received PINGREQ from esp32cam-client
+1761329247: Sending PINGRESP to esp32cam-client
+1761329269: Client esp32cam-client has exceeded timeout, disconnecting.
+1761329271: New connection from 172.18.0.1:51142 on port 1883.
+1761329271: New client connected from 172.18.0.1:51142 as esp32cam-client (p2, c1, k15).
+1761329271: No will message specified.
+1761329271: Sending CONNACK to esp32cam-client (0, 0)
+1761329271: Received SUBSCRIBE from esp32cam-client
+1761329271: 	facial/attendance/capture (QoS 0)
+1761329271: esp32cam-client 0 facial/attendance/capture
+1761329271: Sending SUBACK to esp32cam-client
+1761329286: Received PINGREQ from esp32cam-client
+1761329286: Sending PINGRESP to esp32cam-client
+1761329294: Received PINGREQ from mqttjs_722ddc8d
+1761329294: Sending PINGRESP to mqttjs_722ddc8d
+1761329301: Received PINGREQ from esp32cam-client
+1761329301: Sending PINGRESP to esp32cam-client
+1761329311: Received PUBLISH from mqttjs_722ddc8d (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329311: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329316: Received PINGREQ from esp32cam-client
+1761329316: Sending PINGRESP to esp32cam-client
+1761329331: Received PINGREQ from esp32cam-client
+1761329331: Sending PINGRESP to esp32cam-client
+1761329335: Received PUBLISH from mqttjs_722ddc8d (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329335: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329346: Received PINGREQ from esp32cam-client
+1761329346: Sending PINGRESP to esp32cam-client
+1761329354: Received PINGREQ from mqttjs_722ddc8d
+1761329354: Sending PINGRESP to mqttjs_722ddc8d
+1761329361: Received PINGREQ from esp32cam-client
+1761329361: Sending PINGRESP to esp32cam-client
+1761329372: Received PUBLISH from mqttjs_722ddc8d (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329372: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329376: Received PINGREQ from esp32cam-client
+1761329376: Sending PINGRESP to esp32cam-client
+1761329391: Received PINGREQ from esp32cam-client
+1761329391: Sending PINGRESP to esp32cam-client
+1761329406: Received PINGREQ from esp32cam-client
+1761329406: Sending PINGRESP to esp32cam-client
+1761329414: Received PINGREQ from mqttjs_722ddc8d
+1761329414: Sending PINGRESP to mqttjs_722ddc8d
+1761329421: Received PINGREQ from esp32cam-client
+1761329421: Sending PINGRESP to esp32cam-client
+1761329436: Received PINGREQ from esp32cam-client
+1761329436: Sending PINGRESP to esp32cam-client
+1761329451: Received PINGREQ from esp32cam-client
+1761329451: Sending PINGRESP to esp32cam-client
+1761329466: Received PINGREQ from esp32cam-client
+1761329466: Sending PINGRESP to esp32cam-client
+1761329474: Received PINGREQ from mqttjs_722ddc8d
+1761329474: Sending PINGRESP to mqttjs_722ddc8d
+1761329481: Received PINGREQ from esp32cam-client
+1761329481: Sending PINGRESP to esp32cam-client
+1761329496: Received PINGREQ from esp32cam-client
+1761329496: Sending PINGRESP to esp32cam-client
+1761329511: Received PINGREQ from esp32cam-client
+1761329511: Sending PINGRESP to esp32cam-client
+1761329526: Received PINGREQ from esp32cam-client
+1761329526: Sending PINGRESP to esp32cam-client
+1761329534: Received PINGREQ from mqttjs_722ddc8d
+1761329534: Sending PINGRESP to mqttjs_722ddc8d
+1761329541: Received PINGREQ from esp32cam-client
+1761329541: Sending PINGRESP to esp32cam-client
+1761329556: Received PINGREQ from esp32cam-client
+1761329556: Sending PINGRESP to esp32cam-client
+1761329571: Received PINGREQ from esp32cam-client
+1761329571: Sending PINGRESP to esp32cam-client
+1761329585: Client mqttjs_722ddc8d closed its connection.
+1761329586: mosquitto version 2.0.22 terminating
+1761329586: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761329593: mosquitto version 2.0.22 starting
+1761329593: Config loaded from /mosquitto/config/mosquitto.conf.
+1761329593: Opening ipv4 listen socket on port 1883.
+1761329593: Opening ipv6 listen socket on port 1883.
+1761329593: mosquitto version 2.0.22 running
+1761329594: New connection from 172.18.0.4:56134 on port 1883.
+1761329594: New client connected from 172.18.0.4:56134 as mqttjs_cb4e1bb4 (p2, c1, k60).
+1761329594: No will message specified.
+1761329594: Sending CONNACK to mqttjs_cb4e1bb4 (0, 0)
+1761329594: Received SUBSCRIBE from mqttjs_cb4e1bb4
+1761329594: 	facial/attendance/image (QoS 0)
+1761329594: mqttjs_cb4e1bb4 0 facial/attendance/image
+1761329594: Sending SUBACK to mqttjs_cb4e1bb4
+1761329603: New connection from 172.18.0.1:55046 on port 1883.
+1761329603: New client connected from 172.18.0.1:55046 as esp32cam-client (p2, c1, k15).
+1761329603: No will message specified.
+1761329603: Sending CONNACK to esp32cam-client (0, 0)
+1761329603: Received SUBSCRIBE from esp32cam-client
+1761329603: 	facial/attendance/capture (QoS 0)
+1761329603: esp32cam-client 0 facial/attendance/capture
+1761329603: Sending SUBACK to esp32cam-client
+1761329618: Received PINGREQ from esp32cam-client
+1761329618: Sending PINGRESP to esp32cam-client
+1761329633: Received PINGREQ from esp32cam-client
+1761329633: Sending PINGRESP to esp32cam-client
+1761329633: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329633: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329648: Received PINGREQ from esp32cam-client
+1761329648: Sending PINGRESP to esp32cam-client
+1761329654: Received PINGREQ from mqttjs_cb4e1bb4
+1761329654: Sending PINGRESP to mqttjs_cb4e1bb4
+1761329663: Received PINGREQ from esp32cam-client
+1761329663: Sending PINGRESP to esp32cam-client
+1761329678: Received PINGREQ from esp32cam-client
+1761329678: Sending PINGRESP to esp32cam-client
+1761329693: Received PINGREQ from esp32cam-client
+1761329693: Sending PINGRESP to esp32cam-client
+1761329708: Received PINGREQ from esp32cam-client
+1761329708: Sending PINGRESP to esp32cam-client
+1761329714: Received PINGREQ from mqttjs_cb4e1bb4
+1761329714: Sending PINGRESP to mqttjs_cb4e1bb4
+1761329730: Client esp32cam-client has exceeded timeout, disconnecting.
+1761329774: Received PINGREQ from mqttjs_cb4e1bb4
+1761329774: Sending PINGRESP to mqttjs_cb4e1bb4
+1761329816: New connection from 172.18.0.1:57826 on port 1883.
+1761329816: New client connected from 172.18.0.1:57826 as esp32cam-client (p2, c1, k15).
+1761329816: No will message specified.
+1761329816: Sending CONNACK to esp32cam-client (0, 0)
+1761329816: Received SUBSCRIBE from esp32cam-client
+1761329816: 	facial/attendance/capture (QoS 0)
+1761329816: esp32cam-client 0 facial/attendance/capture
+1761329816: Sending SUBACK to esp32cam-client
+1761329821: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329821: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329831: Received PINGREQ from esp32cam-client
+1761329831: Sending PINGRESP to esp32cam-client
+1761329834: Received PINGREQ from mqttjs_cb4e1bb4
+1761329834: Sending PINGRESP to mqttjs_cb4e1bb4
+1761329846: Received PINGREQ from esp32cam-client
+1761329846: Sending PINGRESP to esp32cam-client
+1761329861: Received PINGREQ from esp32cam-client
+1761329861: Sending PINGRESP to esp32cam-client
+1761329868: New connection from 172.18.0.1:58238 on port 1883.
+1761329868: Client esp32cam-client already connected, closing old connection.
+1761329868: New client connected from 172.18.0.1:58238 as esp32cam-client (p2, c1, k15).
+1761329868: No will message specified.
+1761329868: Sending CONNACK to esp32cam-client (0, 0)
+1761329868: Received SUBSCRIBE from esp32cam-client
+1761329868: 	facial/attendance/capture (QoS 0)
+1761329868: esp32cam-client 0 facial/attendance/capture
+1761329868: Sending SUBACK to esp32cam-client
+1761329871: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329871: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761329883: Received PINGREQ from esp32cam-client
+1761329883: Sending PINGRESP to esp32cam-client
+1761329894: Received PINGREQ from mqttjs_cb4e1bb4
+1761329894: Sending PINGRESP to mqttjs_cb4e1bb4
+1761329898: Received PINGREQ from esp32cam-client
+1761329898: Sending PINGRESP to esp32cam-client
+1761329913: Received PINGREQ from esp32cam-client
+1761329913: Sending PINGRESP to esp32cam-client
+1761329928: Received PINGREQ from esp32cam-client
+1761329928: Sending PINGRESP to esp32cam-client
+1761329943: Received PINGREQ from esp32cam-client
+1761329943: Sending PINGRESP to esp32cam-client
+1761329954: Received PINGREQ from mqttjs_cb4e1bb4
+1761329954: Sending PINGRESP to mqttjs_cb4e1bb4
+1761329958: Received PINGREQ from esp32cam-client
+1761329958: Sending PINGRESP to esp32cam-client
+1761329973: Received PINGREQ from esp32cam-client
+1761329973: Sending PINGRESP to esp32cam-client
+1761329988: Received PINGREQ from esp32cam-client
+1761329988: Sending PINGRESP to esp32cam-client
+1761330003: Received PINGREQ from esp32cam-client
+1761330003: Sending PINGRESP to esp32cam-client
+1761330014: Received PINGREQ from mqttjs_cb4e1bb4
+1761330014: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330025: Client esp32cam-client has exceeded timeout, disconnecting.
+1761330074: Received PINGREQ from mqttjs_cb4e1bb4
+1761330074: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330105: New connection from 172.18.0.1:50234 on port 1883.
+1761330105: New client connected from 172.18.0.1:50234 as esp32cam-client (p2, c1, k60).
+1761330105: No will message specified.
+1761330105: Sending CONNACK to esp32cam-client (0, 0)
+1761330105: Received SUBSCRIBE from esp32cam-client
+1761330105: 	facial/attendance/capture (QoS 0)
+1761330105: esp32cam-client 0 facial/attendance/capture
+1761330105: Sending SUBACK to esp32cam-client
+1761330134: Received PINGREQ from mqttjs_cb4e1bb4
+1761330134: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330166: Received PINGREQ from esp32cam-client
+1761330166: Sending PINGRESP to esp32cam-client
+1761330194: Received PINGREQ from mqttjs_cb4e1bb4
+1761330194: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330225: Received PINGREQ from esp32cam-client
+1761330225: Sending PINGRESP to esp32cam-client
+1761330254: Received PINGREQ from mqttjs_cb4e1bb4
+1761330254: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330297: New connection from 172.18.0.1:47808 on port 1883.
+1761330297: Client esp32cam-client already connected, closing old connection.
+1761330297: New client connected from 172.18.0.1:47808 as esp32cam-client (p2, c1, k60).
+1761330297: No will message specified.
+1761330297: Sending CONNACK to esp32cam-client (0, 0)
+1761330297: Received SUBSCRIBE from esp32cam-client
+1761330297: 	facial/attendance/capture (QoS 0)
+1761330297: esp32cam-client 0 facial/attendance/capture
+1761330297: Sending SUBACK to esp32cam-client
+1761330314: Received PINGREQ from mqttjs_cb4e1bb4
+1761330314: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330357: Received PINGREQ from esp32cam-client
+1761330357: Sending PINGRESP to esp32cam-client
+1761330361: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330361: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330362: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (2513 bytes))
+1761330362: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (2513 bytes))
+1761330374: Received PINGREQ from mqttjs_cb4e1bb4
+1761330374: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330375: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330375: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330376: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (2881 bytes))
+1761330376: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (2881 bytes))
+1761330392: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330392: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330392: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4504 bytes))
+1761330392: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4504 bytes))
+1761330397: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330397: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330397: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (6476 bytes))
+1761330397: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (6476 bytes))
+1761330401: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330401: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330401: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4361 bytes))
+1761330401: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4361 bytes))
+1761330403: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330403: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330403: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (6768 bytes))
+1761330403: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (6768 bytes))
+1761330410: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330410: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330411: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (6768 bytes))
+1761330411: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (6768 bytes))
+1761330413: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330413: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330414: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (6768 bytes))
+1761330414: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (6768 bytes))
+1761330415: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330415: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330415: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4557 bytes))
+1761330415: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4557 bytes))
+1761330430: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330430: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330430: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4647 bytes))
+1761330430: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4647 bytes))
+1761330432: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330432: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330433: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4641 bytes))
+1761330433: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4641 bytes))
+1761330434: Received PINGREQ from mqttjs_cb4e1bb4
+1761330434: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330434: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330434: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330435: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4641 bytes))
+1761330435: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4641 bytes))
+1761330438: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330438: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330438: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4641 bytes))
+1761330438: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4641 bytes))
+1761330439: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330439: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330440: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4641 bytes))
+1761330440: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4641 bytes))
+1761330440: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330440: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330441: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4728 bytes))
+1761330441: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4728 bytes))
+1761330444: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330444: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330445: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4905 bytes))
+1761330445: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4905 bytes))
+1761330445: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330445: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330446: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4903 bytes))
+1761330446: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4903 bytes))
+1761330448: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330448: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330448: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4903 bytes))
+1761330448: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4903 bytes))
+1761330449: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330449: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330450: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4903 bytes))
+1761330450: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4903 bytes))
+1761330451: Received PUBLISH from mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330451: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761330452: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (4903 bytes))
+1761330452: Sending PUBLISH to mqttjs_cb4e1bb4 (d0, q0, r0, m0, 'facial/attendance/image', ... (4903 bytes))
+1761330494: Received PINGREQ from mqttjs_cb4e1bb4
+1761330494: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330511: Received PINGREQ from esp32cam-client
+1761330511: Sending PINGRESP to esp32cam-client
+1761330554: Received PINGREQ from mqttjs_cb4e1bb4
+1761330554: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330571: Received PINGREQ from esp32cam-client
+1761330571: Sending PINGRESP to esp32cam-client
+1761330614: Received PINGREQ from mqttjs_cb4e1bb4
+1761330614: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330663: Client esp32cam-client has exceeded timeout, disconnecting.
+1761330673: Received PINGREQ from mqttjs_cb4e1bb4
+1761330673: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330733: Received PINGREQ from mqttjs_cb4e1bb4
+1761330733: Sending PINGRESP to mqttjs_cb4e1bb4
+1761330756: New connection from 172.18.0.1:50266 on port 1883.
+1761330756: New client connected from 172.18.0.1:50266 as esp32cam-client (p2, c1, k60).
+1761330756: No will message specified.
+1761330756: Sending CONNACK to esp32cam-client (0, 0)
+1761330757: Received SUBSCRIBE from esp32cam-client
+1761330757: 	facial/attendance/capture (QoS 0)
+1761330757: esp32cam-client 0 facial/attendance/capture
+1761330757: Sending SUBACK to esp32cam-client
+1761331481: Received PINGREQ from mqttjs_cb4e1bb4
+1761331481: Sending PINGRESP to mqttjs_cb4e1bb4
+1761331489: Client mqttjs_cb4e1bb4 closed its connection.
+1761331490: mosquitto version 2.0.22 terminating
+1761331490: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761331504: mosquitto version 2.0.22 starting
+1761331504: Config loaded from /mosquitto/config/mosquitto.conf.
+1761331504: Opening ipv4 listen socket on port 1883.
+1761331504: Opening ipv6 listen socket on port 1883.
+1761331504: mosquitto version 2.0.22 running
+1761331506: New connection from 172.18.0.4:40656 on port 1883.
+1761331506: New client connected from 172.18.0.4:40656 as mqttjs_1a46dfb9 (p2, c1, k60).
+1761331506: No will message specified.
+1761331506: Sending CONNACK to mqttjs_1a46dfb9 (0, 0)
+1761331506: New connection from 172.18.0.1:52862 on port 1883.
+1761331506: New client connected from 172.18.0.1:52862 as esp32cam-client (p2, c1, k60).
+1761331506: No will message specified.
+1761331506: Sending CONNACK to esp32cam-client (0, 0)
+1761331506: Received SUBSCRIBE from mqttjs_1a46dfb9
+1761331506: 	facial/attendance/image (QoS 0)
+1761331506: mqttjs_1a46dfb9 0 facial/attendance/image
+1761331506: Sending SUBACK to mqttjs_1a46dfb9
+1761331506: Received SUBSCRIBE from esp32cam-client
+1761331506: 	facial/attendance/capture (QoS 0)
+1761331506: esp32cam-client 0 facial/attendance/capture
+1761331506: Sending SUBACK to esp32cam-client
+1761331566: Received PINGREQ from mqttjs_1a46dfb9
+1761331566: Sending PINGRESP to mqttjs_1a46dfb9
+1761331566: Received PINGREQ from esp32cam-client
+1761331566: Sending PINGRESP to esp32cam-client
+1761331626: Received PINGREQ from mqttjs_1a46dfb9
+1761331626: Sending PINGRESP to mqttjs_1a46dfb9
+1761331626: Received PINGREQ from esp32cam-client
+1761331626: Sending PINGRESP to esp32cam-client
+1761331686: Received PINGREQ from mqttjs_1a46dfb9
+1761331686: Sending PINGRESP to mqttjs_1a46dfb9
+1761331686: Received PINGREQ from esp32cam-client
+1761331686: Sending PINGRESP to esp32cam-client
+1761331746: Received PINGREQ from mqttjs_1a46dfb9
+1761331746: Sending PINGRESP to mqttjs_1a46dfb9
+1761331746: Received PINGREQ from esp32cam-client
+1761331746: Sending PINGRESP to esp32cam-client
+1761331806: Received PINGREQ from mqttjs_1a46dfb9
+1761331806: Sending PINGRESP to mqttjs_1a46dfb9
+1761331806: Received PINGREQ from esp32cam-client
+1761331806: Sending PINGRESP to esp32cam-client
+1761331866: Received PINGREQ from mqttjs_1a46dfb9
+1761331866: Sending PINGRESP to mqttjs_1a46dfb9
+1761331866: Received PINGREQ from esp32cam-client
+1761331866: Sending PINGRESP to esp32cam-client
+1761331893: Received PUBLISH from mqttjs_1a46dfb9 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761331893: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761331894: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (2897 bytes))
+1761331894: Sending PUBLISH to mqttjs_1a46dfb9 (d0, q0, r0, m0, 'facial/attendance/image', ... (2897 bytes))
+1761331897: Received PUBLISH from mqttjs_1a46dfb9 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761331897: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761331899: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (3186 bytes))
+1761331899: Sending PUBLISH to mqttjs_1a46dfb9 (d0, q0, r0, m0, 'facial/attendance/image', ... (3186 bytes))
+1761331901: Received PUBLISH from mqttjs_1a46dfb9 (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761331901: Sending PUBLISH to esp32cam-client (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761331902: Received PUBLISH from esp32cam-client (d0, q0, r0, m0, 'facial/attendance/image', ... (5458 bytes))
+1761331902: Sending PUBLISH to mqttjs_1a46dfb9 (d0, q0, r0, m0, 'facial/attendance/image', ... (5458 bytes))
+1761331926: Received PINGREQ from mqttjs_1a46dfb9
+1761331926: Sending PINGRESP to mqttjs_1a46dfb9
+1761331986: Received PINGREQ from mqttjs_1a46dfb9
+1761331986: Sending PINGRESP to mqttjs_1a46dfb9
+1761331992: Client esp32cam-client has exceeded timeout, disconnecting.
+1761332046: Received PINGREQ from mqttjs_1a46dfb9
+1761332046: Sending PINGRESP to mqttjs_1a46dfb9
+1761332101: Client mqttjs_1a46dfb9 closed its connection.
+1761332102: mosquitto version 2.0.22 terminating
+1761332102: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761332126: mosquitto version 2.0.22 starting
+1761332126: Config loaded from /mosquitto/config/mosquitto.conf.
+1761332126: Opening ipv4 listen socket on port 1883.
+1761332126: Opening ipv6 listen socket on port 1883.
+1761332126: mosquitto version 2.0.22 running
+1761332128: New connection from 172.18.0.4:47940 on port 1883.
+1761332128: New client connected from 172.18.0.4:47940 as mqttjs_fd9a67cc (p2, c1, k60).
+1761332128: No will message specified.
+1761332128: Sending CONNACK to mqttjs_fd9a67cc (0, 0)
+1761332128: Received SUBSCRIBE from mqttjs_fd9a67cc
+1761332128: 	facial/attendance/image (QoS 0)
+1761332128: mqttjs_fd9a67cc 0 facial/attendance/image
+1761332128: Sending SUBACK to mqttjs_fd9a67cc
+1761332161: Received PUBLISH from mqttjs_fd9a67cc (d0, q0, r0, m0, 'facial/attendance/capture', ... (7 bytes))
+1761332188: Received PINGREQ from mqttjs_fd9a67cc
+1761332188: Sending PINGRESP to mqttjs_fd9a67cc
+1761332248: Received PINGREQ from mqttjs_fd9a67cc
+1761332248: Sending PINGRESP to mqttjs_fd9a67cc
+1761332308: Received PINGREQ from mqttjs_fd9a67cc
+1761332308: Sending PINGRESP to mqttjs_fd9a67cc
+1761332368: Received PINGREQ from mqttjs_fd9a67cc
+1761332368: Sending PINGRESP to mqttjs_fd9a67cc
+1761332428: Received PINGREQ from mqttjs_fd9a67cc
+1761332428: Sending PINGRESP to mqttjs_fd9a67cc
+1761332431: Client mqttjs_fd9a67cc closed its connection.
+1761332432: mosquitto version 2.0.22 terminating
+1761332432: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761333149: mosquitto version 2.0.22 starting
+1761333149: Config loaded from /mosquitto/config/mosquitto.conf.
+1761333149: Opening ipv4 listen socket on port 1883.
+1761333149: Opening ipv6 listen socket on port 1883.
+1761333149: mosquitto version 2.0.22 running
+1761333152: New connection from 172.18.0.5:36674 on port 1883.
+1761333152: New client connected from 172.18.0.5:36674 as mqttjs_64f06885 (p2, c1, k60).
+1761333152: No will message specified.
+1761333152: Sending CONNACK to mqttjs_64f06885 (0, 0)
+1761333152: Received SUBSCRIBE from mqttjs_64f06885
+1761333152: 	facial/attendance/image (QoS 0)
+1761333152: mqttjs_64f06885 0 facial/attendance/image
+1761333152: Sending SUBACK to mqttjs_64f06885
+1761333212: Received PINGREQ from mqttjs_64f06885
+1761333212: Sending PINGRESP to mqttjs_64f06885
+1761333272: Received PINGREQ from mqttjs_64f06885
+1761333272: Sending PINGRESP to mqttjs_64f06885
+1761333332: Received PINGREQ from mqttjs_64f06885
+1761333332: Sending PINGRESP to mqttjs_64f06885
+1761333379: New connection from 172.18.0.1:49742 on port 1883.
+1761333379: Client <unknown> closed its connection.
+1761333392: Received PINGREQ from mqttjs_64f06885
+1761333392: Sending PINGRESP to mqttjs_64f06885
+1761333452: Received PINGREQ from mqttjs_64f06885
+1761333452: Sending PINGRESP to mqttjs_64f06885
+1761333512: Received PINGREQ from mqttjs_64f06885
+1761333512: Sending PINGRESP to mqttjs_64f06885
+1761333572: Received PINGREQ from mqttjs_64f06885
+1761333572: Sending PINGRESP to mqttjs_64f06885
+1761333632: Received PINGREQ from mqttjs_64f06885
+1761333632: Sending PINGRESP to mqttjs_64f06885
+1761333675: Client mqttjs_64f06885 closed its connection.
+1761333676: mosquitto version 2.0.22 terminating
+1761333676: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761333687: mosquitto version 2.0.22 starting
+1761333687: Config loaded from /mosquitto/config/mosquitto.conf.
+1761333687: Opening ipv4 listen socket on port 1883.
+1761333687: mosquitto version 2.0.22 running
+1761333688: New connection from 172.18.0.5:45468 on port 1883.
+1761333688: New client connected from 172.18.0.5:45468 as mqttjs_7cea699c (p2, c1, k60).
+1761333688: No will message specified.
+1761333688: Sending CONNACK to mqttjs_7cea699c (0, 0)
+1761333689: Received SUBSCRIBE from mqttjs_7cea699c
+1761333689: 	facial/attendance/image (QoS 0)
+1761333689: mqttjs_7cea699c 0 facial/attendance/image
+1761333689: Sending SUBACK to mqttjs_7cea699c
+1761333749: Received PINGREQ from mqttjs_7cea699c
+1761333749: Sending PINGRESP to mqttjs_7cea699c
+1761333809: Received PINGREQ from mqttjs_7cea699c
+1761333809: Sending PINGRESP to mqttjs_7cea699c
+1761333856: Client mqttjs_7cea699c closed its connection.
+1761333857: mosquitto version 2.0.22 terminating
+1761333857: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1761333872: mosquitto version 2.0.22 starting
+1761333872: Config loaded from /mosquitto/config/mosquitto.conf.
+1761333872: Opening ipv4 listen socket on port 1883.
+1761333872: mosquitto version 2.0.22 running
+1761333874: New connection from 172.18.0.5:36032 on port 1883.
+1761333874: New client connected from 172.18.0.5:36032 as mqttjs_6e680694 (p2, c1, k60).
+1761333874: No will message specified.
+1761333874: Sending CONNACK to mqttjs_6e680694 (0, 0)
+1761333874: Received SUBSCRIBE from mqttjs_6e680694
+1761333874: 	facial/attendance/image (QoS 0)
+1761333874: mqttjs_6e680694 0 facial/attendance/image
+1761333874: Sending SUBACK to mqttjs_6e680694
+1761333934: Received PINGREQ from mqttjs_6e680694
+1761333934: Sending PINGRESP to mqttjs_6e680694
+1761333994: Received PINGREQ from mqttjs_6e680694
+1761333994: Sending PINGRESP to mqttjs_6e680694
+1761334054: Received PINGREQ from mqttjs_6e680694
+1761334054: Sending PINGRESP to mqttjs_6e680694
+1761334072: Client mqttjs_6e680694 closed its connection.
+1761334074: New connection from 172.18.0.3:36358 on port 1883.
+1761334074: New client connected from 172.18.0.3:36358 as mqttjs_6b66e3fb (p2, c1, k60).
+1761334074: No will message specified.
+1761334074: Sending CONNACK to mqttjs_6b66e3fb (0, 0)
+1761334075: Received SUBSCRIBE from mqttjs_6b66e3fb
+1761334075: 	facial/attendance/image (QoS 0)
+1761334075: mqttjs_6b66e3fb 0 facial/attendance/image
+1761334075: Sending SUBACK to mqttjs_6b66e3fb
+1761334135: Received PINGREQ from mqttjs_6b66e3fb
+1761334135: Sending PINGRESP to mqttjs_6b66e3fb
+1761334195: Received PINGREQ from mqttjs_6b66e3fb
+1761334195: Sending PINGRESP to mqttjs_6b66e3fb
+1761334255: Received PINGREQ from mqttjs_6b66e3fb
+1761334255: Sending PINGRESP to mqttjs_6b66e3fb
+1761334315: Received PINGREQ from mqttjs_6b66e3fb
+1761334315: Sending PINGRESP to mqttjs_6b66e3fb
+1761334375: Received PINGREQ from mqttjs_6b66e3fb
+1761334375: Sending PINGRESP to mqttjs_6b66e3fb
+1761334435: Received PINGREQ from mqttjs_6b66e3fb
+1761334435: Sending PINGRESP to mqttjs_6b66e3fb
+1761334495: Received PINGREQ from mqttjs_6b66e3fb
+1761334495: Sending PINGRESP to mqttjs_6b66e3fb
+1761334555: Received PINGREQ from mqttjs_6b66e3fb
+1761334555: Sending PINGRESP to mqttjs_6b66e3fb
+1761334615: Received PINGREQ from mqttjs_6b66e3fb
+1761334615: Sending PINGRESP to mqttjs_6b66e3fb
+1761334623: New connection from 172.18.0.1:39664 on port 1883.
+1761334623: Client <unknown> closed its connection.
+1761334675: Received PINGREQ from mqttjs_6b66e3fb
+1761334675: Sending PINGRESP to mqttjs_6b66e3fb
+1761334735: Received PINGREQ from mqttjs_6b66e3fb
+1761334735: Sending PINGRESP to mqttjs_6b66e3fb
+1761334795: Received PINGREQ from mqttjs_6b66e3fb
+1761334795: Sending PINGRESP to mqttjs_6b66e3fb
+1761334807: New connection from 172.18.0.1:43456 on port 1883.
+1761334807: New client connected from 172.18.0.1:43456 as esp32cam-2b7f (p2, c1, k15).
+1761334807: No will message specified.
+1761334807: Sending CONNACK to esp32cam-2b7f (0, 0)
+1761334807: Received SUBSCRIBE from esp32cam-2b7f
+1761334807: 	facial/attendance/capture (QoS 0)
+1761334807: esp32cam-2b7f 0 facial/attendance/capture
+1761334807: Sending SUBACK to esp32cam-2b7f
+1761334822: Received PINGREQ from esp32cam-2b7f
+1761334822: Sending PINGRESP to esp32cam-2b7f
+1761334837: Received PINGREQ from esp32cam-2b7f
+1761334837: Sending PINGRESP to esp32cam-2b7f
+1761334852: Received PINGREQ from esp32cam-2b7f
+1761334852: Sending PINGRESP to esp32cam-2b7f
+1761334855: Received PINGREQ from mqttjs_6b66e3fb
+1761334855: Sending PINGRESP to mqttjs_6b66e3fb
+1761334867: Received PINGREQ from esp32cam-2b7f
+1761334867: Sending PINGRESP to esp32cam-2b7f
+1761334882: Received PINGREQ from esp32cam-2b7f
+1761334882: Sending PINGRESP to esp32cam-2b7f
+1761334886: Client mqttjs_6b66e3fb closed its connection.
+1761334887: mosquitto version 2.0.22 terminating
+1761334887: Saving in-memory database to /mosquitto/data//mosquitto.db.
