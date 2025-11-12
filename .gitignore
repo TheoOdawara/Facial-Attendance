@@ -99,3 +99,10 @@ facialenv/
 
 # Ignore PowerShell history
 *.pshistory
+
+
+STATUS.md  
+APRESENTACAO.md 
+CHANGELOG.md 
+NEXT_STEPS.md 
+ROADMAP.md 
