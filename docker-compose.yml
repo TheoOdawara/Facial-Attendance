@@ -57,13 +57,13 @@ services:
       - facialnet
 
   faceapi:
-    build: ./faceapi
+    build: ./OpenCv
     container_name: facial_faceapi
     restart: always
     ports:
       - "5000:5000"
     volumes:
-      - ./faceapi:/app
+      - ./OpenCv:/app
     networks:
       - facialnet
 

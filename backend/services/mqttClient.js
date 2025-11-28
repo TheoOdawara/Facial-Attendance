@@ -1,4 +1,5 @@
 const mqtt = require('mqtt');
+const captureEvents = require('./captureEvents');
 require('dotenv').config();
 
 const MQTT_HOST = process.env.MQTT_HOST || 'mqtt';
@@ -29,10 +30,15 @@ client.on('connect', () => {
 });
 
 client.on('message', (topic, message) => {
+  console.log(`📨 Mensagem MQTT recebida no tópico: ${topic}, tamanho: ${message.length} bytes`);
+  
   if (topic === 'facial/attendance/image') {
     capturedImageBuffer = message;
     lastCaptureTimestamp = Date.now();
-    console.log('✓ Imagem recebida do ESP32, tamanho:', message.length, 'bytes');
+    console.log(`✓ Imagem capturada armazenada! Tamanho: ${message.length} bytes, Timestamp: ${lastCaptureTimestamp}`);
+    captureEvents.emit('image_received', message);
+  } else {
+    console.log(`⚠ Tópico ignorado: ${topic}`);
   }
 });
 
@@ -57,8 +63,14 @@ function requestCapture() {
  * @returns {Buffer|null}
  */
 function getLastCapturedImage(captureRequestTime) {
+  // Debug detalhado
+  if (capturedImageBuffer) {
+    console.log(`🔍 Verificando imagem: captureRequest=${captureRequestTime}, lastCapture=${lastCaptureTimestamp}, diferença=${lastCaptureTimestamp - captureRequestTime}ms`);
+  }
+  
   // Só retorna se a imagem foi recebida DEPOIS da solicitação
   if (capturedImageBuffer && lastCaptureTimestamp > captureRequestTime) {
+    console.log('✅ Imagem válida encontrada, retornando...');
     return capturedImageBuffer;
   }
   return null;

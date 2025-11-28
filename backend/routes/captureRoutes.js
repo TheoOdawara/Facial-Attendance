@@ -1,5 +1,6 @@
 const express = require('express');
 const mqttClient = require('../services/mqttClient');
+const captureEvents = require('../services/captureEvents');
 const router = express.Router();
 
 /**
@@ -7,35 +8,44 @@ const router = express.Router();
  * @description Aciona ESP32 para capturar imagem e aguarda retorno
  * @access Public
  */
-router.post('/capture-face', async (req, res) => {
+router.post('/', async (req, res) => {
+  // Limpa qualquer ouvinte antigo que tenha ficado "pendurado"
+  captureEvents.removeAllListeners('image_received');
+
   try {
-    console.log('→ Solicitação de captura recebida');
-    const captureRequestTime = Date.now();
+    console.log('→ Nova solicitação de captura iniciada...');
+    
+    // Marca o tempo exato que PEDIMOS a foto
+    const requestStartTime = Date.now();
+    
+    // Envia comando
     mqttClient.requestCapture();
-    console.log('→ Comando CAPTURE enviado ao ESP32');
-    
-    // Aguarda até 45 segundos pela imagem (aumentado para imagens grandes)
-    let attempts = 0;
-    const maxAttempts = 90; // 45 segundos (90 x 500ms)
-    
-    const checkImage = setInterval(() => {
-      const image = mqttClient.getLastCapturedImage(captureRequestTime);
-      if (image) {
-        clearInterval(checkImage);
-        console.log('✓ Imagem recebida, enviando ao frontend');
-        const base64Image = image.toString('base64');
-        return res.json({ image: base64Image });
-      }
-      attempts++;
-      if (attempts >= maxAttempts) {
-        clearInterval(checkImage);
-        console.log('✗ Timeout ao aguardar imagem do ESP32');
-        return res.status(408).json({ error: 'Timeout ao aguardar imagem do ESP32' });
-      }
-    }, 500);
+
+    // 2) Aguarda a imagem via evento (sem polling)
+    const imageBuffer = await new Promise((resolve, reject) => {
+      // Timeout de segurança (20s)
+      const timeout = setTimeout(() => {
+        captureEvents.removeListener('image_received', onImageReceived);
+        reject(new Error('Timeout: ESP32 demorou muito para responder.'));
+      }, 25000); // 25 segundos (dê tempo ao ESP32 para fazer o "Flush")
+
+      // Handler que resolve a promise quando a imagem chega
+      const onImageReceived = (buffer) => {
+        clearTimeout(timeout);
+        captureEvents.removeListener('image_received', onImageReceived);
+        resolve(buffer);
+      };
+
+      // Escuta o evento uma única vez
+      captureEvents.once('image_received', onImageReceived);
+    });
+
+    console.log(`✓ Imagem processada e retornando ao front.`);
+    const base64Image = imageBuffer.toString('base64');
+    return res.json({ image: base64Image });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Erro ao capturar imagem' });
+    console.error('❌ Erro:', err.message);
+    res.status(408).json({ error: 'O dispositivo não respondeu a tempo. Tente novamente.' });
   }
 });
 

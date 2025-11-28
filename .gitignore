@@ -5,6 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+
 # Logs
 logs/
 *.log
@@ -100,9 +101,7 @@ facialenv/
 # Ignore PowerShell history
 *.pshistory
 
+# GitHub configuration and workflows
+.github/
 
-STATUS.md  
-APRESENTACAO.md 
-CHANGELOG.md 
-NEXT_STEPS.md 
-ROADMAP.md 
+

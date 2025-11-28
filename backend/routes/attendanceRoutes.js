@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../services/dbService');
 const faceApi = require('../services/faceApiService');
+const { authMiddleware } = require('../middlewares/authMiddleware');
 const router = express.Router();
 const multer = require('multer');
 const upload = multer();
@@ -8,13 +9,13 @@ const upload = multer();
 /**
  * @route POST /api/attendance
  * @description Registra presença a partir de uma imagem, usando reconhecimento facial.
- * @access Public
+ * @access Public (para permitir ESP32 enviar sem token)
  * @param {object} req - O objeto da requisição Express.
  * @param {file} req.file - Imagem enviada (campo 'image') ou
  * @param {string} req.body.image - Imagem em base64
  * @param {object} res - O objeto da resposta Express.
  */
-router.post('/attendance', upload.single('image'), async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
   let imageBuffer;
   
   // Aceita tanto file upload quanto base64 no body
@@ -65,19 +66,64 @@ router.post('/attendance', upload.single('image'), async (req, res) => {
 /**
  * @route GET /api/attendance
  * @description Lista registros de presença, incluindo dados do aluno.
- * @access Public
+ * @access Private (requer autenticação)
  * @param {object} req - O objeto da requisição Express.
  * @param {object} res - O objeto da resposta Express.
  */
-router.get('/attendance', async (req, res) => {
+router.get('/', authMiddleware, async (req, res) => {
   try {
-    const sql = `
-      SELECT a.id, a.timestamp, a.recognized, s.id as student_id, s.name, s.registration_number
+    const { classId, studentId, startDate, endDate } = req.query;
+    
+    let sql = `
+      SELECT 
+        a.id, 
+        a.timestamp, 
+        a.recognized, 
+        s.id as student_id, 
+        s.name, 
+        s.registration_number,
+        s.class_id,
+        c.name as class_name
       FROM attendance a
       JOIN students s ON a.student_id = s.id
-      ORDER BY a.timestamp DESC
+      LEFT JOIN classes c ON s.class_id = c.id
+      WHERE 1=1
     `;
-    const result = await db.query(sql);
+    
+    const params = [];
+    let paramIndex = 1;
+    
+    // Filtro por turma
+    if (classId) {
+      sql += ` AND s.class_id = $${paramIndex}`;
+      params.push(classId);
+      paramIndex++;
+    }
+    
+    // Filtro por aluno
+    if (studentId) {
+      sql += ` AND s.id = $${paramIndex}`;
+      params.push(studentId);
+      paramIndex++;
+    }
+    
+    // Filtro por data inicial
+    if (startDate) {
+      sql += ` AND a.timestamp >= $${paramIndex}`;
+      params.push(startDate);
+      paramIndex++;
+    }
+    
+    // Filtro por data final
+    if (endDate) {
+      sql += ` AND a.timestamp <= $${paramIndex}`;
+      params.push(endDate);
+      paramIndex++;
+    }
+    
+    sql += ' ORDER BY a.timestamp DESC';
+    
+    const result = await db.query(sql, params);
     res.json(result.rows);
   } catch (err) {
     console.error(err);
