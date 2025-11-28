@@ -1,22 +1,21 @@
-/*
- * Código ESP32-CAM para captura de imagem e envio via MQTT com autenticação
- * Integração com sistema de chamada facial
- *
- * Requisitos: Biblioteca PubSubClient, WiFi, ESP32-CAM
- */
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include <HTTPClient.h>
 #include "esp_camera.h"
 
 // --- Configurações Wi-Fi e MQTT ---
-#define WIFI_SSID       "VIVOFIBRA-D126"
-#define WIFI_PASSWORD   "mJEce8o2fr"
-#define MQTT_SERVER     "192.168.15.36"  // IP do broker (SEM ESPAÇOS!)
+#define WIFI_SSID       "SVGT_CLARO"
+#define WIFI_PASSWORD   "33301309"
+#define MQTT_SERVER     "192.168.0.220"  // IP do broker (SEM ESPAÇOS!)
 #define MQTT_PORT       1883
 #define MQTT_USER       ""  // Deixe vazio se allow_anonymous true
 #define MQTT_PASSWORD   ""
 #define MQTT_TOPIC_IMAGE    "facial/attendance/image"
 #define MQTT_TOPIC_CAPTURE  "facial/attendance/capture"
+
+// Backend HTTP (NOVO - bypass MQTT para imagens)
+#define BACKEND_HOST    "192.168.0.220"
+#define BACKEND_PORT    3001
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -89,50 +88,81 @@ void connectToMqtt() {
   }
 }
 
-// --- Função para capturar imagem e publicar via MQTT ---
+// --- Função para capturar imagem e enviar via HTTP ---
 void captureAndSendImage() {
-  // Garante que está conectado ao MQTT antes de enviar
-  if (!client.connected()) {
-    Serial.println("MQTT desconectado, reconectando...");
-    connectToMqtt();
-  }
-  
   camera_fb_t *fb = esp_camera_fb_get();
   if (!fb) {
-    Serial.println("Falha ao capturar imagem");
+    Serial.println("✗ Falha ao capturar imagem");
     return;
   }
   
-  Serial.print("Imagem capturada! Tamanho: ");
-  Serial.print(fb->len);
-  Serial.println(" bytes");
-  Serial.println("Enviando via MQTT...");
+  Serial.printf("✓ Imagem capturada! Tamanho: %d bytes\n", fb->len);
   
-  // Tenta enviar com retry e QoS 0
-  bool published = false;
-  for (int i = 0; i < 3; i++) {
-    // beginPublish para mensagens grandes
-    if (client.beginPublish(MQTT_TOPIC_IMAGE, fb->len, false)) {
-      size_t written = client.write(fb->buf, fb->len);
-      if (written == fb->len && client.endPublish()) {
-        published = true;
-        Serial.println("✓ Imagem enviada com sucesso!");
-        break;
-      }
-    }
-    
-    Serial.print("✗ Tentativa ");
-    Serial.print(i + 1);
-    Serial.println(" falhou, tentando novamente...");
-    delay(1000);
-    client.loop();
+  // =========================================================================
+  // USA HTTPClient (ROBUSTO - gerencia buffer TCP automaticamente)
+  // =========================================================================
+  
+  HTTPClient http;
+  
+  String url = "http://" + String(BACKEND_HOST) + ":" + String(BACKEND_PORT) + "/api/esp32/upload-image";
+  Serial.println("Enviando para: " + url);
+  
+  http.begin(url);
+  http.setTimeout(15000); // 15 segundos timeout
+  
+  // Monta corpo multipart/form-data
+  String boundary = "----ESP32CAMBoundary";
+  
+  // CRÍTICO: Define Content-Type ANTES de montar o corpo
+  http.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+  
+  String bodyStart = "--" + boundary + "\r\n";
+  bodyStart += "Content-Disposition: form-data; name=\"image\"; filename=\"capture.jpg\"\r\n";
+  bodyStart += "Content-Type: image/jpeg\r\n\r\n";
+  
+  String bodyEnd = "\r\n--" + boundary + "--\r\n";
+  
+  // Aloca buffer para corpo completo
+  size_t totalLen = bodyStart.length() + fb->len + bodyEnd.length();
+  uint8_t *body = (uint8_t*)malloc(totalLen);
+  
+  if (!body) {
+    Serial.println("✗ Falha ao alocar memória para upload");
+    esp_camera_fb_return(fb);
+    http.end();
+    return;
   }
   
-  if (!published) {
-    Serial.println("✗ Falha ao enviar imagem após 3 tentativas");
-  }
+  // Monta corpo completo
+  memcpy(body, bodyStart.c_str(), bodyStart.length());
+  memcpy(body + bodyStart.length(), fb->buf, fb->len);
+  memcpy(body + bodyStart.length() + fb->len, bodyEnd.c_str(), bodyEnd.length());
   
+  Serial.printf("Enviando %d bytes via HTTPClient...\n", totalLen);
+  
+  // Envia POST (HTTPClient gerencia tudo automaticamente!)
+  int httpCode = http.POST(body, totalLen);
+  
+  free(body); // Libera memória
   esp_camera_fb_return(fb);
+  
+  // Processa resposta
+  if (httpCode > 0) {
+    Serial.printf("✓ HTTP Code: %d\n", httpCode);
+    
+    if (httpCode == HTTP_CODE_OK) {
+      String response = http.getString();
+      Serial.println("✓ Resposta: " + response);
+      Serial.println("✓✓✓ UPLOAD CONCLUÍDO COM SUCESSO! ✓✓✓");
+    } else {
+      String response = http.getString();
+      Serial.println("✗ Erro: " + response);
+    }
+  } else {
+    Serial.printf("✗ Falha na requisição: %s\n", http.errorToString(httpCode).c_str());
+  }
+  
+  http.end();
 }
 
 // --- Configuração da câmera AI-Thinker ---
@@ -159,14 +189,14 @@ void initCamera() {
   config.xclk_freq_hz = 20000000;
   config.pixel_format = PIXFORMAT_JPEG;
   
-  // Configuração de qualidade - Alta qualidade otimizada para 32KB buffer
+  // Configuração otimizada: SVGA com compressão média (~10-15KB)
   if(psramFound()){
-    config.frame_size = FRAMESIZE_VGA; // 640x480 - alta resolução
-    config.jpeg_quality = 12; // Alta qualidade (12 = ~15-25KB para VGA)
+    config.frame_size = FRAMESIZE_SVGA; // 800x600 - boa resolução
+    config.jpeg_quality = 15; // Compressão média (15 = ~10-15KB para SVGA)
     config.fb_count = 2;
   } else {
-    config.frame_size = FRAMESIZE_QVGA; // 320x240
-    config.jpeg_quality = 15;
+    config.frame_size = FRAMESIZE_HVGA; // 480x320 - maior que QVGA
+    config.jpeg_quality = 18;
     config.fb_count = 1;
   }
   
@@ -271,8 +301,9 @@ void setup() {
   
   client.setServer(MQTT_SERVER, MQTT_PORT);
   client.setCallback(mqttCallback);
-  client.setBufferSize(32768); // 32KB - suporta VGA de alta qualidade
-  client.setKeepAlive(60); // 60 segundos keepalive para evitar timeout
+  client.setBufferSize(40960); // 40KB - margem para SVGA comprimido
+  client.setKeepAlive(90); // 90 segundos keepalive
+  client.setSocketTimeout(30); // 30 segundos timeout em envios grandes
   
   Serial.println("Configuração MQTT concluída");
   
