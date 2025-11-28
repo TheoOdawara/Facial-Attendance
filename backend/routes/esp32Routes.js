@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const captureEvents = require('../services/captureEvents');
 const router = express.Router();
 
 // Configura multer para receber imagem em memória
@@ -45,6 +46,12 @@ router.post('/upload-image', (req, res, next) => {
     // Armazena imagem no cache
     lastCapturedImage = req.file.buffer;
     lastCaptureTimestamp = Date.now();
+    // Emite evento global para quem estiver aguardando a imagem
+    try {
+      captureEvents.emit('image_received', lastCapturedImage);
+    } catch (e) {
+      console.error('Erro ao emitir evento image_received (HTTP):', e.message || e);
+    }
     
     res.json({ 
       success: true, 

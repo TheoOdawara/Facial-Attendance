@@ -114,11 +114,17 @@ export default function Layout({ children }) {
       <AppBar
         position="fixed"
         sx={{
-          width: { md: `calc(100% - ${drawerWidth}px)` },
+          width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
           ml: { md: `${drawerWidth}px` },
+          top: 0,
+          boxSizing: 'border-box',
+          pl: { xs: 1, sm: 2, md: 3 },
+          pr: { xs: 1.5, sm: 2.5, md: 3.5 },
+          overflowX: 'hidden',
+          zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ pr: { xs: 0.5, md: 1 }, display: 'flex', alignItems: 'center', gap: 1 }}>
           <IconButton
             color="inherit"
             edge="start"
@@ -127,15 +133,25 @@ export default function Layout({ children }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{
+              flexGrow: 1,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
             {menuItems.find((item) => item.path === location.pathname)?.text || 'FacialAttendance'}
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pr: { xs: 1, md: 1.5 } }}>
             <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' } }}>
               {user?.name}
             </Typography>
-            <IconButton onClick={handleMenuClick} size="small">
-              <Avatar sx={{ bgcolor: 'secondary.main', width: 32, height: 32 }}>
+            <IconButton onClick={handleMenuClick} size="small" sx={{ p: 0.5, mr: { xs: 0.5, sm: 1 } }}>
+              <Avatar sx={{ bgcolor: 'secondary.main', width: 36, height: 36 }}>
                 {user?.name?.charAt(0)}
               </Avatar>
             </IconButton>

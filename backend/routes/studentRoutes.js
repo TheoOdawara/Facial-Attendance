@@ -1,53 +1,37 @@
 const express = require('express');
 const db = require('../services/dbService');
 const { authMiddleware } = require('../middlewares/authMiddleware');
+const axios = require('axios');
+const crypto = require('crypto');
 const router = express.Router();
 
+// Diagnostic: confirm module load
+console.log('Loaded studentRoutes module (clean)');
+router.use((req, res, next) => {
+  console.log(`studentRoutes: ${req.method} ${req.path}`);
+  next();
+});
+
+// URL da API Python (pega do .env ou usa padrão)
+const FACE_API_URL = process.env.PYTHON_FACE_API_URL || 'http://faceapi:5000';
+
 /**
- * @route GET /api/students
- * @description Lista todos os alunos cadastrados.
- * @access Private (requer autenticação)
+ * GET / - Lista alunos (opcionalmente filtra por classId e active)
  */
-router.get('/students', authMiddleware, async (req, res) => {
+router.get('/', authMiddleware, async (req, res) => {
   try {
     const { classId, active } = req.query;
-    
     let sql = `
-      SELECT 
-        s.id, 
-        s.name, 
-        s.registration_number, 
-        s.class_id,
-        s.active,
-        s.created_at,
-        c.name as class_name
+      SELECT s.id, s.name, s.registration_number, s.class_id, s.active, s.created_at, c.name as class_name
       FROM students s
       LEFT JOIN classes c ON s.class_id = c.id
-      WHERE 1=1
-    `;
-    
+      WHERE 1=1`;
     const params = [];
-    let paramIndex = 1;
-    
-    // Filtro por turma
-    if (classId) {
-      sql += ` AND s.class_id = $${paramIndex}`;
-      params.push(classId);
-      paramIndex++;
-    }
-    
-    // Filtro por status ativo
-    if (active !== undefined) {
-      sql += ` AND s.active = $${paramIndex}`;
-      params.push(active === 'true');
-      paramIndex++;
-    } else {
-      // Por padrão, lista apenas ativos
-      sql += ' AND s.active = TRUE';
-    }
-    
+    let idx = 1;
+    if (classId) { sql += ` AND s.class_id = $${idx++}`; params.push(classId); }
+    if (active !== undefined) { sql += ` AND s.active = $${idx++}`; params.push(active === 'true'); }
+    else { sql += ' AND s.active = TRUE'; }
     sql += ' ORDER BY s.created_at DESC';
-    
     const result = await db.query(sql, params);
     res.json(result.rows);
   } catch (err) {
@@ -57,124 +41,65 @@ router.get('/students', authMiddleware, async (req, res) => {
 });
 
 /**
- * @route POST /api/students
- * @description Registra um novo aluno no sistema.
- * @access Private (requer autenticação)
- * @param {object} req - O objeto da requisição Express.
- * @param {string} req.body.name - O nome do aluno.
- * @param {string} req.body.registrationNumber - O número de matrícula.
- * @param {string} req.body.faceEncoding - A representação codificada da face (ex: Base64).
- * @param {number} req.body.classId - ID da turma (opcional, usa turma padrão se não fornecido).
- * @param {object} res - O objeto da resposta Express.
+ * POST / - Registra um novo aluno (espera name, registrationNumber, faceEncoding, classId opt)
  */
-router.post('/students', authMiddleware, async (req, res) => {
-
-  console.log('Recebido em /api/students:', req.body);
+router.post('/', authMiddleware, async (req, res) => {
+  console.log('📝 Tentativa de cadastro recebida');
   const { name, registrationNumber, faceEncoding, classId } = req.body;
 
   if (!name || !registrationNumber || !faceEncoding) {
-    console.error('❌ Cadastro inválido:', { name, registrationNumber, faceEncoding });
     return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
   }
 
+  // 1) Tenta registrar temporariamente no Python para validar face
+  const tempId = 'temp_' + Date.now();
   try {
-    // PRIMEIRO registra a face no sistema Python para obter encoding único
-    console.log(`📸 Registrando face para: ${name}`);
-    const axios = require('axios');
-    
-    // Gera ID temporário único
-    const tempId = 'temp_' + Date.now();
-    
-    try {
-      // Registra no Python ANTES de salvar no banco
-      const faceResponse = await axios.post('http://faceapi:5000/register', {
-        student_id: tempId,
-        name: name,
-        image: faceEncoding
-      });
-      
-      if (!faceResponse.data.success) {
-        return res.status(400).json({ error: faceResponse.data.error || 'Erro ao processar face' });
-      }
-      
-      console.log(`✓ Face processada com sucesso para: ${name}`);
-    } catch (faceErr) {
-      console.error('❌ Erro ao processar face:', faceErr.response?.data || faceErr.message);
-      return res.status(400).json({ 
-        error: faceErr.response?.data?.error || 'Erro ao processar face. Certifique-se de que há uma face visível na imagem.' 
-      });
-    }
-    
-    // Agora salva no banco com um hash da imagem como face_encoding
-    const crypto = require('crypto');
-    const encodingHash = crypto.createHash('md5').update(faceEncoding).digest('hex');
-    
-    // Se classId não fornecido, usa turma padrão (id=1)
-    const finalClassId = classId || 1;
-    
-    const sql = 'INSERT INTO students (name, registration_number, face_encoding, class_id) VALUES ($1, $2, $3, $4) RETURNING *';
-    const params = [name, registrationNumber, encodingHash, finalClassId];
-
-    const result = await db.query(sql, params);
-    const student = result.rows[0];
-    
-    // Atualiza o registro no Python com o ID real do aluno
-    try {
-      await axios.post('http://faceapi:5000/register', {
-        student_id: student.id,
-        name: student.name,
-        image: faceEncoding
-      });
-      console.log(`✓ Face registrada no sistema de reconhecimento com ID: ${student.id}`);
-
-      // Remove encoding temporário usando o mesmo ID gerado anteriormente
-      await axios.post('http://faceapi:5000/remove-temp', {
-        temp_id: tempId
-      });
-      console.log(`✓ Encoding temporário ${tempId} removido do sistema de reconhecimento`);
-    } catch (updateErr) {
-      console.error('⚠️ Erro ao atualizar ID ou remover temp no sistema de reconhecimento:', updateErr.message);
-    }
-
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    if (err.code === '23505') {
-      return res.status(409).json({ error: 'Aluno já cadastrado.' });
-    }
-    console.error(err);
-    res.status(500).json({ error: 'Erro ao registrar aluno.' });
+    await axios.post(`${FACE_API_URL}/register`, { student_id: tempId, name, image: faceEncoding });
+    console.log('✓ Face válida detectada pelo Python');
+  } catch (faceErr) {
+    console.error('❌ Erro no Reconhecimento Facial:', faceErr.response?.data || faceErr.message);
+    const msgErro = faceErr.response?.data?.error || 'Rosto não detectado. Tente melhorar a iluminação ou chegar mais perto.';
+    return res.status(400).json({ error: msgErro });
   }
+
+  // 2) Salva no DB (hash do encoding apenas)
+  const encodingHash = crypto.createHash('md5').update(faceEncoding).digest('hex');
+  const finalClassId = classId || 1;
+  const sql = 'INSERT INTO students (name, registration_number, face_encoding, class_id) VALUES ($1, $2, $3, $4) RETURNING *';
+  let student;
+  try {
+    const result = await db.query(sql, [name, registrationNumber, encodingHash, finalClassId]);
+    student = result.rows[0];
+  } catch (dbErr) {
+    // limpa temp no Python
+    await axios.post(`${FACE_API_URL}/remove-temp`, { temp_id: tempId }).catch(() => {});
+    if (dbErr.code === '23505') return res.status(409).json({ error: 'Matrícula já cadastrada.' });
+    console.error('Erro ao inserir aluno no DB:', dbErr);
+    return res.status(500).json({ error: 'Erro ao salvar aluno.' });
+  }
+
+  // 3) Atualiza o registro no Python com o ID real
+  try {
+    await axios.post(`${FACE_API_URL}/register`, { student_id: student.id, name: student.name, image: faceEncoding });
+    await axios.post(`${FACE_API_URL}/remove-temp`, { temp_id: tempId }).catch(() => {});
+    console.log(`✓ Aluno ${student.name} (ID: ${student.id}) cadastrado com sucesso!`);
+  } catch (updateErr) {
+    console.error('⚠️ Erro não-crítico ao atualizar ID no Python:', updateErr.message);
+    // não reverte o DB; retorna sucesso parcial
+  }
+
+  return res.status(201).json(student);
 });
 
 /**
- * @route GET /api/students/:id
- * @description Retorna dados de um aluno específico.
- * @access Private
+ * GET /:id - retorna aluno
  */
-router.get('/students/:id', authMiddleware, async (req, res) => {
+router.get('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
-    
-    const sql = `
-      SELECT 
-        s.id, 
-        s.name, 
-        s.registration_number, 
-        s.class_id,
-        s.active,
-        s.created_at,
-        c.name as class_name
-      FROM students s
-      LEFT JOIN classes c ON s.class_id = c.id
-      WHERE s.id = $1
-    `;
-    
+    const sql = `SELECT s.id, s.name, s.registration_number, s.class_id, s.active, s.created_at, c.name as class_name FROM students s LEFT JOIN classes c ON s.class_id = c.id WHERE s.id = $1`;
     const result = await db.query(sql, [id]);
-    
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Aluno não encontrado.' });
-    }
-    
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Aluno não encontrado.' });
     res.json(result.rows[0]);
   } catch (err) {
     console.error('Erro ao buscar aluno:', err);
@@ -183,64 +108,35 @@ router.get('/students/:id', authMiddleware, async (req, res) => {
 });
 
 /**
- * @route PUT /api/students/:id
- * @description Atualiza dados de um aluno (sem alterar face).
- * @access Private
+ * PUT /:id - atualiza aluno
  */
-router.put('/students/:id', authMiddleware, async (req, res) => {
+router.put('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, registration_number, class_id, active } = req.body;
-    
     const sql = `
       UPDATE students
-      SET 
-        name = COALESCE($1, name),
-        registration_number = COALESCE($2, registration_number),
-        class_id = COALESCE($3, class_id),
-        active = COALESCE($4, active),
-        updated_at = CURRENT_TIMESTAMP
-      WHERE id = $5
-      RETURNING *
+      SET name = COALESCE($1, name), registration_number = COALESCE($2, registration_number), class_id = COALESCE($3, class_id), active = COALESCE($4, active), updated_at = CURRENT_TIMESTAMP
+      WHERE id = $5 RETURNING *
     `;
-    
     const result = await db.query(sql, [name, registration_number, class_id, active, id]);
-    
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Aluno não encontrado.' });
-    }
-    
-    console.log(`✓ Aluno atualizado: ${id} por: ${req.user.name}`);
-    
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Aluno não encontrado.' });
     res.json(result.rows[0]);
   } catch (err) {
-    if (err.code === '23505') {
-      return res.status(409).json({ error: 'Matrícula já cadastrada para outro aluno.' });
-    }
     console.error('Erro ao atualizar aluno:', err);
     res.status(500).json({ error: 'Erro ao atualizar aluno.' });
   }
 });
 
 /**
- * @route DELETE /api/students/:id
- * @description Remove aluno (soft delete).
- * @access Private
+ * DELETE /:id - soft delete
  */
-router.delete('/students/:id', authMiddleware, async (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
-    
-    const sql = 'UPDATE students SET active = FALSE, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING id, name';
-    const result = await db.query(sql, [id]);
-    
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Aluno não encontrado.' });
-    }
-    
-    console.log(`✓ Aluno removido: ${result.rows[0].name} (id: ${id}) por: ${req.user.name}`);
-    
-    res.json({ success: true, message: 'Aluno removido com sucesso.' });
+    const result = await db.query('UPDATE students SET active = FALSE, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING id, name', [id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Aluno não encontrado.' });
+    res.json({ success: true });
   } catch (err) {
     console.error('Erro ao remover aluno:', err);
     res.status(500).json({ error: 'Erro ao remover aluno.' });

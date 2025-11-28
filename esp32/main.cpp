@@ -4,17 +4,18 @@
 #include "esp_camera.h"
 
 // --- Configurações Wi-Fi e MQTT ---
-#define WIFI_SSID       "SVGT_CLARO"
-#define WIFI_PASSWORD   "33301309"
-#define MQTT_SERVER     "192.168.0.220"  // IP do broker (SEM ESPAÇOS!)
+#define WIFI_SSID       "Theo"
+#define WIFI_PASSWORD   "laudo1234"
+#define MQTT_SERVER     "172.20.10.2"  // IP do broker (SEM ESPAÇOS!)
 #define MQTT_PORT       1883
 #define MQTT_USER       ""  // Deixe vazio se allow_anonymous true
 #define MQTT_PASSWORD   ""
 #define MQTT_TOPIC_IMAGE    "facial/attendance/image"
 #define MQTT_TOPIC_CAPTURE  "facial/attendance/capture"
+bool shouldCapture = false; // Flag de controle
 
 // Backend HTTP (NOVO - bypass MQTT para imagens)
-#define BACKEND_HOST    "192.168.0.220"
+#define BACKEND_HOST    "172.20.10.2"
 #define BACKEND_PORT    3001
 
 WiFiClient espClient;
@@ -28,8 +29,8 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
       message += (char)payload[i];
     }
     if (message == "CAPTURE") {
-      Serial.println("Comando CAPTURE recebido, tirando foto...");
-      captureAndSendImage();
+    Serial.println("Comando recebido. Agendando captura...");
+    shouldCapture = true; // Apenas levanta a flag, NÃO chama a função pesada aqui
     }
   }
 }
@@ -90,76 +91,68 @@ void connectToMqtt() {
 
 // --- Função para capturar imagem e enviar via HTTP ---
 void captureAndSendImage() {
-  camera_fb_t *fb = esp_camera_fb_get();
+  camera_fb_t *fb = nullptr;
+  
+  // 1. O TRUQUE DO FLUSH: Captura um frame e descarta para limpar o buffer antigo
+  // Isso garante que a próxima foto seja do momento "agora"
+  fb = esp_camera_fb_get();
+  if (fb) {
+    esp_camera_fb_return(fb); // Devolve o buffer (joga fora)
+    delay(400); // Pequena pausa para o sensor atualizar
+  }
+
+  // 2. Captura a imagem REAL
+  fb = esp_camera_fb_get();
   if (!fb) {
     Serial.println("✗ Falha ao capturar imagem");
     return;
   }
-  
+
   Serial.printf("✓ Imagem capturada! Tamanho: %d bytes\n", fb->len);
-  
-  // =========================================================================
-  // USA HTTPClient (ROBUSTO - gerencia buffer TCP automaticamente)
-  // =========================================================================
-  
+
+  // --- INICIO DO ENVIO HTTP ---
   HTTPClient http;
   
   String url = "http://" + String(BACKEND_HOST) + ":" + String(BACKEND_PORT) + "/api/esp32/upload-image";
   Serial.println("Enviando para: " + url);
   
   http.begin(url);
-  http.setTimeout(15000); // 15 segundos timeout
+  http.setTimeout(20000); // Aumente para 20s para garantir
   
-  // Monta corpo multipart/form-data
   String boundary = "----ESP32CAMBoundary";
-  
-  // CRÍTICO: Define Content-Type ANTES de montar o corpo
   http.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
   
   String bodyStart = "--" + boundary + "\r\n";
   bodyStart += "Content-Disposition: form-data; name=\"image\"; filename=\"capture.jpg\"\r\n";
   bodyStart += "Content-Type: image/jpeg\r\n\r\n";
-  
   String bodyEnd = "\r\n--" + boundary + "--\r\n";
   
-  // Aloca buffer para corpo completo
   size_t totalLen = bodyStart.length() + fb->len + bodyEnd.length();
   uint8_t *body = (uint8_t*)malloc(totalLen);
   
   if (!body) {
-    Serial.println("✗ Falha ao alocar memória para upload");
+    Serial.println("✗ Falha de memória no ESP32");
     esp_camera_fb_return(fb);
     http.end();
     return;
   }
   
-  // Monta corpo completo
+  // Monta o pacote na memória
   memcpy(body, bodyStart.c_str(), bodyStart.length());
   memcpy(body + bodyStart.length(), fb->buf, fb->len);
   memcpy(body + bodyStart.length() + fb->len, bodyEnd.c_str(), bodyEnd.length());
   
-  Serial.printf("Enviando %d bytes via HTTPClient...\n", totalLen);
-  
-  // Envia POST (HTTPClient gerencia tudo automaticamente!)
   int httpCode = http.POST(body, totalLen);
   
-  free(body); // Libera memória
-  esp_camera_fb_return(fb);
+  free(body);
+  esp_camera_fb_return(fb); // Libera a câmera IMEDIATAMENTE após copiar os dados
   
-  // Processa resposta
-  if (httpCode > 0) {
-    Serial.printf("✓ HTTP Code: %d\n", httpCode);
-    
-    if (httpCode == HTTP_CODE_OK) {
-      String response = http.getString();
-      Serial.println("✓ Resposta: " + response);
-      Serial.println("✓✓✓ UPLOAD CONCLUÍDO COM SUCESSO! ✓✓✓");
-    } else {
-      String response = http.getString();
-      Serial.println("✗ Erro: " + response);
-    }
+  if (httpCode == HTTP_CODE_OK) {
+    Serial.println("✓ UPLOAD SUCESSO!");
   } else {
-    Serial.printf("✗ Falha na requisição: %s\n", http.errorToString(httpCode).c_str());
+    Serial.printf("✗ Erro HTTP: %d\n", httpCode);
+    // Se der erro, tenta reconectar wifi na proxima
+    if (httpCode < 0) WiFi.disconnect(); 
   }
   
   http.end();
@@ -193,7 +186,10 @@ void initCamera() {
   if(psramFound()){
     config.frame_size = FRAMESIZE_SVGA; // 800x600 - boa resolução
     config.jpeg_quality = 15; // Compressão média (15 = ~10-15KB para SVGA)
-    config.fb_count = 2;
+    // Use fb_count = 1 to avoid returning a previously buffered frame
+    // which can cause sending an older image. If you need higher throughput
+    // re-enable 2 but be aware of possible stale-frame issues.
+    config.fb_count = 1;
   } else {
     config.frame_size = FRAMESIZE_HVGA; // 480x320 - maior que QVGA
     config.jpeg_quality = 18;
@@ -317,5 +313,12 @@ void loop() {
   if (!client.connected()) {
     connectToMqtt();
   }
-  client.loop();
+  client.loop(); // Mantém a conexão viva
+
+  // Verifica se precisa capturar (fora do callback)
+  if (shouldCapture) {
+    shouldCapture = false; // Reseta flag
+    captureAndSendImage(); 
+    client.loop(); // Chama loop novamente logo após o trabalho pesado para evitar disconnect
+  }
 }

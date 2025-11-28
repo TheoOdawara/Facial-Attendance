@@ -4,7 +4,7 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+./github
 # Logs
 logs/
 *.log
@@ -101,8 +101,3 @@ facialenv/
 *.pshistory
 
 
-STATUS.md  
-APRESENTACAO.md 
-CHANGELOG.md 
-NEXT_STEPS.md 
-ROADMAP.md 

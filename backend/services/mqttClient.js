@@ -1,4 +1,5 @@
 const mqtt = require('mqtt');
+const captureEvents = require('./captureEvents');
 require('dotenv').config();
 
 const MQTT_HOST = process.env.MQTT_HOST || 'mqtt';
@@ -35,6 +36,7 @@ client.on('message', (topic, message) => {
     capturedImageBuffer = message;
     lastCaptureTimestamp = Date.now();
     console.log(`✓ Imagem capturada armazenada! Tamanho: ${message.length} bytes, Timestamp: ${lastCaptureTimestamp}`);
+    captureEvents.emit('image_received', message);
   } else {
     console.log(`⚠ Tópico ignorado: ${topic}`);
   }
