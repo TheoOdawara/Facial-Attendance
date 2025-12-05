@@ -9,7 +9,8 @@ const router = express.Router();
 // SCHEMAS DE VALIDAÇÃO JOI
 // =============================================================================
 const loginSchema = Joi.object({
-  email: Joi.string().email().required(),
+  // A opção tlds: { allow: false } permite domínios como .local
+  email: Joi.string().email({ tlds: { allow: false } }).required(),
   password: Joi.string().min(6).required()
 });
 

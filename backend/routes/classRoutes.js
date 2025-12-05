@@ -2,29 +2,87 @@ const express = require('express');
 const db = require('../services/dbService');
 const { authMiddleware } = require('../middlewares/authMiddleware');
 const Joi = require('joi');
+
 const router = express.Router();
 
 // Todas as rotas requerem autenticação
 router.use(authMiddleware);
 
-// =============================================================================
-// SCHEMAS DE VALIDAÇÃO
-// =============================================================================
+// Validação de payload de criação/atualização
 const createClassSchema = Joi.object({
   name: Joi.string().min(3).max(100).required(),
-  academic_period: Joi.string().max(50).optional(),
-  description: Joi.string().max(500).optional()
+  academic_period: Joi.string().max(50).allow(null, '').optional(),
+  description: Joi.string().max(500).allow(null, '').optional()
 });
 
-// =============================================================================
-// ROTAS DE TURMAS
-// =============================================================================
+// GET /api/classes/:id/stats - estatísticas detalhadas da turma
+router.get('/:id/stats', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const idNum = parseInt(id, 10);
+    if (Number.isNaN(idNum)) return res.status(400).json({ error: 'ID da turma inválido.' });
 
-/**
- * @route GET /api/classes
- * @description Lista todas as turmas do sistema.
- * @access Private
- */
+    // Total de alunos ativos
+    const studentSql = 'SELECT COUNT(*) as total FROM students WHERE class_id = $1 AND active = TRUE';
+    const studentResult = await db.query(studentSql, [idNum]);
+    const totalStudents = parseInt(studentResult.rows[0].total);
+
+    // Total de presenças registradas
+    const attendanceSql = 'SELECT COUNT(*) as total FROM attendance WHERE student_id IN (SELECT id FROM students WHERE class_id = $1 AND active = TRUE)';
+    const attendanceResult = await db.query(attendanceSql, [idNum]);
+    const attendanceTotal = parseInt(attendanceResult.rows[0].total);
+
+    // Total de dias de aula (datas distintas de presença)
+    const daysSql = 'SELECT COUNT(DISTINCT DATE(timestamp)) as total_days FROM attendance WHERE student_id IN (SELECT id FROM students WHERE class_id = $1 AND active = TRUE)';
+    const daysResult = await db.query(daysSql, [idNum]);
+    const totalDays = parseInt(daysResult.rows[0].total_days);
+
+    // Total de faltas
+    const possiblePresences = totalStudents * totalDays;
+    const totalAbsences = possiblePresences - attendanceTotal;
+
+    // Taxa de presença geral (%)
+    const attendanceRate = possiblePresences > 0
+      ? ((attendanceTotal / possiblePresences) * 100).toFixed(1)
+      : 0;
+
+    // Alunos presentes hoje
+    const presentTodaySql = `
+      SELECT DISTINCT s.id, s.name
+      FROM students s
+      JOIN attendance a ON a.student_id = s.id
+      WHERE s.class_id = $1 AND s.active = TRUE AND DATE(a.timestamp) = CURRENT_DATE
+    `;
+    const presentTodayResult = await db.query(presentTodaySql, [idNum]);
+    const presentToday = presentTodayResult.rows.map(r => ({ id: r.id, name: r.name }));
+
+    // Alunos faltantes hoje
+    const absentTodaySql = `
+      SELECT s.id, s.name
+      FROM students s
+      WHERE s.class_id = $1 AND s.active = TRUE AND s.id NOT IN (
+        SELECT DISTINCT a.student_id FROM attendance a WHERE DATE(a.timestamp) = CURRENT_DATE
+      )
+    `;
+    const absentTodayResult = await db.query(absentTodaySql, [idNum]);
+    const absentToday = absentTodayResult.rows.map(r => ({ id: r.id, name: r.name }));
+
+    res.json({
+      totalStudents,
+      attendanceTotal,
+      totalDays,
+      totalAbsences,
+      attendanceRate: parseFloat(attendanceRate),
+      presentToday,
+      absentToday
+    });
+  } catch (err) {
+    console.error('Erro ao buscar estatísticas da turma:', err);
+    res.status(500).json({ error: 'Erro ao buscar estatísticas da turma.' });
+  }
+});
+
+// GET /api/classes - lista todas as turmas ativas
 router.get('/', async (req, res) => {
   try {
     const sql = `
@@ -41,28 +99,26 @@ router.get('/', async (req, res) => {
       FROM classes c
       JOIN professors p ON c.professor_id = p.id
       LEFT JOIN students s ON s.class_id = c.id AND s.active = TRUE
-      WHERE c.active = TRUE
+      WHERE c.active = TRUE AND c.professor_id = $1
       GROUP BY c.id, p.id, p.name
       ORDER BY c.created_at DESC
     `;
-    
-    const result = await db.query(sql);
-    res.json(result.rows);
+
+    const result = await db.query(sql, [req.user.id]);
+    return res.json(result.rows);
   } catch (err) {
     console.error('Erro ao listar turmas:', err);
-    res.status(500).json({ error: 'Erro ao listar turmas.' });
+    return res.status(500).json({ error: 'Erro ao listar turmas.' });
   }
 });
 
-/**
- * @route GET /api/classes/:id
- * @description Retorna detalhes de uma turma específica.
- * @access Private
- */
+// GET /api/classes/:id - detalhes da turma (id numérico)
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    
+    const idNum = parseInt(id, 10);
+    if (Number.isNaN(idNum)) return res.status(400).json({ error: 'ID da turma inválido.' });
+
     const sql = `
       SELECT 
         c.*,
@@ -72,69 +128,52 @@ router.get('/:id', async (req, res) => {
       JOIN professors p ON c.professor_id = p.id
       WHERE c.id = $1 AND c.active = TRUE
     `;
-    
-    const result = await db.query(sql, [id]);
-    
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Turma não encontrada.' });
-    }
-    
-    res.json(result.rows[0]);
+
+    const result = await db.query(sql, [idNum]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Turma não encontrada.' });
+
+    return res.json(result.rows[0]);
   } catch (err) {
     console.error('Erro ao buscar turma:', err);
-    res.status(500).json({ error: 'Erro ao buscar turma.' });
+    return res.status(500).json({ error: 'Erro ao buscar turma.' });
   }
 });
 
-/**
- * @route POST /api/classes
- * @description Cria nova turma vinculada ao professor autenticado.
- * @access Private
- */
+// POST /api/classes - cria nova turma (vinculada ao professor autenticado)
 router.post('/', async (req, res) => {
   try {
     const { error, value } = createClassSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
-    
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
     const { name, academic_period, description } = value;
-    
     const sql = `
       INSERT INTO classes (name, professor_id, academic_period, description)
       VALUES ($1, $2, $3, $4)
       RETURNING *
     `;
-    
-    const result = await db.query(sql, [name, req.user.id, academic_period, description]);
-    
+
+    const result = await db.query(sql, [name, req.user.id, academic_period || null, description || null]);
     console.log(`✓ Nova turma criada: ${name} por professor: ${req.user.name}`);
-    
-    res.status(201).json(result.rows[0]);
+    return res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error('Erro ao criar turma:', err);
-    res.status(500).json({ error: 'Erro ao criar turma.' });
+    return res.status(500).json({ error: 'Erro ao criar turma.' });
   }
 });
 
-/**
- * @route PUT /api/classes/:id
- * @description Atualiza dados de uma turma.
- * @access Private
- */
+// PUT /api/classes/:id - atualiza turma
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const idNum = parseInt(id, 10);
+    if (Number.isNaN(idNum)) return res.status(400).json({ error: 'ID da turma inválido.' });
+
     const { name, academic_period, description, active } = req.body;
-    
-    // Verifica se turma existe
+
     const checkSql = 'SELECT id FROM classes WHERE id = $1';
-    const checkResult = await db.query(checkSql, [id]);
-    
-    if (checkResult.rows.length === 0) {
-      return res.status(404).json({ error: 'Turma não encontrada.' });
-    }
-    
+    const checkResult = await db.query(checkSql, [idNum]);
+    if (checkResult.rows.length === 0) return res.status(404).json({ error: 'Turma não encontrada.' });
+
     const updateSql = `
       UPDATE classes
       SET 
@@ -146,52 +185,49 @@ router.put('/:id', async (req, res) => {
       WHERE id = $5
       RETURNING *
     `;
-    
-    const result = await db.query(updateSql, [name, academic_period, description, active, id]);
-    
-    console.log(`✓ Turma atualizada: ${id} por professor: ${req.user.name}`);
-    
-    res.json(result.rows[0]);
+
+    const result = await db.query(updateSql, [name, academic_period, description, active, idNum]);
+    console.log(`✓ Turma atualizada: ${idNum} por professor: ${req.user.name}`);
+    return res.json(result.rows[0]);
   } catch (err) {
     console.error('Erro ao atualizar turma:', err);
-    res.status(500).json({ error: 'Erro ao atualizar turma.' });
+    return res.status(500).json({ error: 'Erro ao atualizar turma.' });
   }
 });
 
-/**
- * @route DELETE /api/classes/:id
- * @description Remove turma (soft delete).
- * @access Private
- */
+// DELETE /api/classes/:id - soft delete
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    
+    const idNum = parseInt(id, 10);
+    if (Number.isNaN(idNum)) return res.status(400).json({ error: 'ID da turma inválido.' });
+
     const sql = 'UPDATE classes SET active = FALSE, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING id';
-    const result = await db.query(sql, [id]);
-    
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Turma não encontrada.' });
-    }
-    
-    console.log(`✓ Turma removida: ${id} por professor: ${req.user.name}`);
-    
-    res.json({ success: true, message: 'Turma removida com sucesso.' });
+    const result = await db.query(sql, [idNum]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Turma não encontrada.' });
+
+    console.log(`✓ Turma removida: ${idNum} por professor: ${req.user.name}`);
+    return res.json({ success: true, message: 'Turma removida com sucesso.' });
   } catch (err) {
     console.error('Erro ao remover turma:', err);
-    res.status(500).json({ error: 'Erro ao remover turma.' });
+    return res.status(500).json({ error: 'Erro ao remover turma.' });
   }
 });
 
-/**
- * @route GET /api/classes/:id/students
- * @description Lista alunos de uma turma específica.
- * @access Private
- */
+// GET /api/classes/:id/students - lista alunos da turma
 router.get('/:id/students', async (req, res) => {
   try {
     const { id } = req.params;
-    
+    const idNum = parseInt(id, 10);
+    if (Number.isNaN(idNum)) return res.status(400).json({ error: 'ID da turma inválido.' });
+
+    // Verifica se a turma pertence ao professor logado
+    const checkClassSql = 'SELECT id FROM classes WHERE id = $1 AND professor_id = $2 AND active = TRUE';
+    const checkClassResult = await db.query(checkClassSql, [idNum, req.user.id]);
+    if (checkClassResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Turma não encontrada.' });
+    }
+
     const sql = `
       SELECT 
         s.id, 
@@ -206,25 +242,31 @@ router.get('/:id/students', async (req, res) => {
       GROUP BY s.id
       ORDER BY s.name ASC
     `;
-    
-    const result = await db.query(sql, [id]);
-    res.json(result.rows);
+
+    const result = await db.query(sql, [idNum]);
+    return res.json(result.rows);
   } catch (err) {
     console.error('Erro ao listar alunos da turma:', err);
-    res.status(500).json({ error: 'Erro ao listar alunos da turma.' });
+    return res.status(500).json({ error: 'Erro ao listar alunos da turma.' });
   }
 });
 
-/**
- * @route GET /api/classes/:id/attendance
- * @description Lista presenças de uma turma com filtros opcionais.
- * @access Private
- */
+// GET /api/classes/:id/attendance - lista presenças da turma com filtros
 router.get('/:id/attendance', async (req, res) => {
   try {
     const { id } = req.params;
+    const idNum = parseInt(id, 10);
+    if (Number.isNaN(idNum)) return res.status(400).json({ error: 'ID da turma inválido.' });
+
+    // Verifica se a turma pertence ao professor logado
+    const checkClassSql = 'SELECT id FROM classes WHERE id = $1 AND professor_id = $2 AND active = TRUE';
+    const checkClassResult = await db.query(checkClassSql, [idNum, req.user.id]);
+    if (checkClassResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Turma não encontrada.' });
+    }
+
     const { startDate, endDate, studentId } = req.query;
-    
+
     let sql = `
       SELECT 
         a.id,
@@ -237,39 +279,40 @@ router.get('/:id/attendance', async (req, res) => {
       JOIN students s ON a.student_id = s.id
       WHERE s.class_id = $1
     `;
-    
-    const params = [id];
+
+    const params = [idNum];
     let paramIndex = 2;
-    
-    // Filtro por data inicial
+
     if (startDate) {
       sql += ` AND a.timestamp >= $${paramIndex}`;
       params.push(startDate);
       paramIndex++;
     }
-    
-    // Filtro por data final
+
     if (endDate) {
       sql += ` AND a.timestamp <= $${paramIndex}`;
       params.push(endDate);
       paramIndex++;
     }
-    
-    // Filtro por aluno específico
+
     if (studentId) {
-      sql += ` AND s.id = $${paramIndex}`;
-      params.push(studentId);
-      paramIndex++;
+      const studentIdNum = parseInt(studentId, 10);
+      if (!Number.isNaN(studentIdNum)) {
+        sql += ` AND s.id = $${paramIndex}`;
+        params.push(studentIdNum);
+        paramIndex++;
+      }
     }
-    
+
     sql += ' ORDER BY a.timestamp DESC';
-    
+
     const result = await db.query(sql, params);
-    res.json(result.rows);
+    return res.json(result.rows);
   } catch (err) {
     console.error('Erro ao listar presenças da turma:', err);
-    res.status(500).json({ error: 'Erro ao listar presenças da turma.' });
+    return res.status(500).json({ error: 'Erro ao consultar presenças.' });
   }
 });
 
 module.exports = router;
+

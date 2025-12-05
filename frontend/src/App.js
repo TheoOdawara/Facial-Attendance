@@ -10,6 +10,8 @@ import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import ClassesPage from './pages/ClassesPage';
 import ClassDetailPage from './pages/ClassDetailPage';
+import CreateClassPage from './pages/CreateClassPage';
+import RegisterProfessorPage from './pages/RegisterProfessorPage';
 import StudentRegistrationPage from './pages/StudentRegistrationPage';
 import AttendanceListPage from './pages/AttendanceListPage';
 import MarkAttendancePage from './pages/MarkAttendancePage';
@@ -89,6 +91,12 @@ function Navigation() {
 }
 
 function App() {
+  // Fallback para refresh/404: se logado vai para dashboard, senão login
+  function FallbackRedirect() {
+    const token = localStorage.getItem('token');
+    return token ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />;
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -104,11 +112,14 @@ function App() {
                     <Routes>
                       <Route path="/" element={<Navigate to="/dashboard" replace />} />
                       <Route path="/dashboard" element={<DashboardPage />} />
+                      <Route path="/register-professor" element={<RegisterProfessorPage />} />
                       <Route path="/classes" element={<ClassesPage />} />
+                      <Route path="/classes/new" element={<CreateClassPage />} />
                       <Route path="/classes/:id" element={<ClassDetailPage />} />
                       <Route path="/students" element={<AttendanceListPage />} />
                       <Route path="/register-student" element={<StudentRegistrationPage />} />
                       <Route path="/mark-attendance" element={<MarkAttendancePage />} />
+                      <Route path="*" element={<FallbackRedirect />} />
                     </Routes>
                   </Layout>
                 </ProtectedRoute>

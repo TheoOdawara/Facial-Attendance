@@ -1,7 +1,51 @@
 const express = require('express');
 const db = require('../services/dbService');
 const { authMiddleware, adminMiddleware } = require('../middlewares/authMiddleware');
+const authService = require('../services/authService');
+const Joi = require('joi');
 const router = express.Router();
+// Validação de cadastro de professor
+const registerSchema = Joi.object({
+  name: Joi.string().min(3).max(100).required(),
+  email: Joi.string().email({ tlds: { allow: false } }).required(),
+  password: Joi.string().min(6).required(),
+  role: Joi.string().valid('professor', 'admin').default('professor')
+});
+
+/**
+ * @route POST /api/professors
+ * @description Cadastra novo professor (admin ou público)
+ * @access Private (admin) ou público se desejado
+ */
+router.post('/', async (req, res) => {
+  try {
+    // Se quiser restringir só para admin, descomente:
+    // if (!req.user || req.user.role !== 'admin') return res.status(403).json({ error: 'Acesso negado.' });
+
+    const { error, value } = registerSchema.validate(req.body);
+    if (error) return res.status(400).json({ error: error.details[0].message });
+
+    const { name, email, password, role } = value;
+
+    // Verifica se já existe
+    const checkSql = 'SELECT id FROM professors WHERE email = $1';
+    const checkResult = await db.query(checkSql, [email]);
+    if (checkResult.rows.length > 0) return res.status(409).json({ error: 'E-mail já cadastrado.' });
+
+    const password_hash = await authService.hashPassword(password);
+    const insertSql = `
+      INSERT INTO professors (name, email, password_hash, role, active)
+      VALUES ($1, $2, $3, $4, TRUE)
+      RETURNING id, name, email, role, active, created_at
+    `;
+    const result = await db.query(insertSql, [name, email, password_hash, role]);
+    console.log(`✓ Professor cadastrado: ${email}`);
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Erro ao cadastrar professor:', err);
+    res.status(500).json({ error: 'Erro ao cadastrar professor.' });
+  }
+});
 
 // Todas as rotas requerem autenticação
 router.use(authMiddleware);
@@ -115,7 +159,7 @@ router.get('/:id/stats', async (req, res) => {
     const classSql = 'SELECT COUNT(*) as total FROM classes WHERE professor_id = $1 AND active = TRUE';
     const classResult = await db.query(classSql, [id]);
     const totalClasses = parseInt(classResult.rows[0].total);
-    
+
     // Total de alunos nas turmas do professor
     const studentSql = `
       SELECT COUNT(DISTINCT s.id) as total
@@ -125,7 +169,7 @@ router.get('/:id/stats', async (req, res) => {
     `;
     const studentResult = await db.query(studentSql, [id]);
     const totalStudents = parseInt(studentResult.rows[0].total);
-    
+
     // Presenças hoje
     const attendanceSql = `
       SELECT COUNT(*) as total
@@ -137,16 +181,45 @@ router.get('/:id/stats', async (req, res) => {
     `;
     const attendanceResult = await db.query(attendanceSql, [id]);
     const attendanceToday = parseInt(attendanceResult.rows[0].total);
-    
-    // Taxa de presença hoje (%)
-    const attendanceRate = totalStudents > 0 
-      ? ((attendanceToday / totalStudents) * 100).toFixed(1)
+
+    // Total de presenças (todas)
+    const attendanceTotalSql = `
+      SELECT COUNT(*) as total
+      FROM attendance a
+      JOIN students s ON a.student_id = s.id
+      JOIN classes c ON s.class_id = c.id
+      WHERE c.professor_id = $1
+    `;
+    const attendanceTotalResult = await db.query(attendanceTotalSql, [id]);
+    const attendanceTotal = parseInt(attendanceTotalResult.rows[0].total);
+
+    // Total de faltas (alunos ativos - presenças registradas)
+    // Considera que cada aluno deveria ter uma presença por dia de aula
+    // Para simplificação, calcula faltas como: total possíveis presenças - presenças registradas
+    // (pode ser ajustado para considerar calendário de aulas)
+    const daysSql = `
+      SELECT COUNT(DISTINCT DATE(a.timestamp)) as total_days
+      FROM attendance a
+      JOIN students s ON a.student_id = s.id
+      JOIN classes c ON s.class_id = c.id
+      WHERE c.professor_id = $1
+    `;
+    const daysResult = await db.query(daysSql, [id]);
+    const totalDays = parseInt(daysResult.rows[0].total_days);
+    const possiblePresences = totalStudents * totalDays;
+    const totalAbsences = possiblePresences - attendanceTotal;
+
+    // Taxa de presença geral (%)
+    const attendanceRate = possiblePresences > 0
+      ? ((attendanceTotal / possiblePresences) * 100).toFixed(1)
       : 0;
-    
+
     res.json({
       totalClasses,
       totalStudents,
       attendanceToday,
+      attendanceTotal,
+      totalAbsences,
       attendanceRate: parseFloat(attendanceRate)
     });
   } catch (err) {

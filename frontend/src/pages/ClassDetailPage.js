@@ -17,6 +17,11 @@ import {
   Alert,
   Button,
   Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import { ArrowBack, Group, School, CalendarToday } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -30,8 +35,10 @@ export default function ClassDetailPage() {
   const [classData, setClassData] = useState(null);
   const [students, setStudents] = useState([]);
   const [attendance, setAttendance] = useState([]);
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     loadClassData();
@@ -45,28 +52,46 @@ export default function ClassDetailPage() {
       const classResponse = await axios.get(
         `${process.env.REACT_APP_API_URL}/classes/${id}`
       );
-      console.log('✅ Turma carregada:', classResponse.data);
       setClassData(classResponse.data);
 
       // Carrega alunos da turma
       const studentsResponse = await axios.get(
         `${process.env.REACT_APP_API_URL}/classes/${id}/students`
       );
-      console.log('✅ Alunos carregados:', studentsResponse.data);
       setStudents(studentsResponse.data);
 
       // Carrega presenças da turma
       const attendanceResponse = await axios.get(
         `${process.env.REACT_APP_API_URL}/classes/${id}/attendance`
       );
-      console.log('✅ Presenças carregadas:', attendanceResponse.data);
-      setAttendance(attendanceResponse.data);
+  setAttendance(attendanceResponse.data);
+
+      // Carrega estatísticas detalhadas da turma
+      const statsResponse = await axios.get(
+        `${process.env.REACT_APP_API_URL}/classes/${id}/stats`
+      );
+      setStats(statsResponse.data);
     } catch (err) {
       console.error('❌ Erro ao carregar dados da turma:', err);
-      console.error('❌ Detalhes:', err.response?.data || err.message);
       setError('Erro ao carregar dados da turma.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const confirmDelete = () => setDeleteDialogOpen(true);
+
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      await axios.delete(`${process.env.REACT_APP_API_URL}/classes/${id}`, { headers });
+      setDeleteDialogOpen(false);
+      navigate('/classes');
+    } catch (err) {
+      console.error('Erro ao remover turma:', err, err.response?.data || err.message);
+      setError('Erro ao remover turma');
+      setDeleteDialogOpen(false);
     }
   };
 
@@ -112,6 +137,55 @@ export default function ClassDetailPage() {
         </Box>
       </Box>
 
+      {/* Métricas detalhadas da turma */}
+      {stats && (
+        <>
+          <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid item xs={12} md={3}>
+              <Card elevation={2}>
+                <CardContent>
+                  <Typography variant="body2" color="text.secondary">Taxa de Presença</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="primary">
+                    {stats.attendanceRate}%
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Card elevation={2}>
+                <CardContent>
+                  <Typography variant="body2" color="text.secondary">Total de Faltas</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="error">
+                    {stats.totalAbsences}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Card elevation={2}>
+                <CardContent>
+                  <Typography variant="body2" color="text.secondary">Presentes Hoje</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="success.main">
+                    {stats.presentToday.length}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Card elevation={2}>
+                <CardContent>
+                  <Typography variant="body2" color="text.secondary">Faltantes Hoje</Typography>
+                  <Typography variant="h5" fontWeight="bold" color="warning.main">
+                    {stats.absentToday.length}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+
+        </>
+      )}
+
       {/* Informações da turma */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} md={4}>
@@ -129,6 +203,9 @@ export default function ClassDetailPage() {
                 </Box>
               </Box>
             </CardContent>
+            <Box sx={{ p: 2 }}>
+              <Button color="error" variant="outlined" onClick={confirmDelete}>Remover Turma</Button>
+            </Box>
           </Card>
         </Grid>
 
@@ -169,7 +246,7 @@ export default function ClassDetailPage() {
         </Grid>
       </Grid>
 
-      {/* Alunos da turma */}
+      {/* Alunos da turma com presenças, faltas e status de hoje */}
       <Paper sx={{ p: 3, mb: 4 }}>
         <Typography variant="h6" gutterBottom fontWeight="bold">
           Alunos da Turma
@@ -188,92 +265,57 @@ export default function ClassDetailPage() {
                   <TableCell><strong>Nome</strong></TableCell>
                   <TableCell><strong>Matrícula</strong></TableCell>
                   <TableCell align="center"><strong>Presenças</strong></TableCell>
+                  <TableCell align="center"><strong>Faltas</strong></TableCell>
+                  <TableCell align="center"><strong>Status Hoje</strong></TableCell>
                   <TableCell align="center"><strong>Status</strong></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {students.map((student) => (
-                  <TableRow key={student.id} hover>
-                    <TableCell>{student.name}</TableCell>
-                    <TableCell>{student.registration_number}</TableCell>
-                    <TableCell align="center">
-                      <Chip
-                        label={student.attendance_count || 0}
-                        color="primary"
-                        size="small"
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <Chip
-                        label={student.active ? 'Ativo' : 'Inativo'}
-                        color={student.active ? 'success' : 'default'}
-                        size="small"
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {students.map((student) => {
+                  // Cálculo de faltas
+                  const totalDays = stats?.totalDays || 0;
+                  const presencas = student.attendance_count || 0;
+                  const faltas = totalDays - presencas;
+                  // Status de hoje
+                  const presenteHoje = stats?.presentToday.some(a => a.id === student.id);
+                  const faltanteHoje = stats?.absentToday.some(a => a.id === student.id);
+                  let statusHoje = '-';
+                  if (presenteHoje) statusHoje = 'Presente';
+                  else if (faltanteHoje) statusHoje = 'Faltante';
+                  return (
+                    <TableRow key={student.id} hover>
+                      <TableCell>{student.name}</TableCell>
+                      <TableCell>{student.registration_number}</TableCell>
+                      <TableCell align="center">
+                        <Chip label={presencas} color="primary" size="small" />
+                      </TableCell>
+                      <TableCell align="center">
+                        <Chip label={faltas >= 0 ? faltas : 0} color="error" size="small" />
+                      </TableCell>
+                      <TableCell align="center">
+                        <Chip
+                          label={statusHoje}
+                          color={statusHoje === 'Presente' ? 'success' : statusHoje === 'Faltante' ? 'warning' : 'default'}
+                          size="small"
+                        />
+                      </TableCell>
+                      <TableCell align="center">
+                        <Chip
+                          label={student.active ? 'Ativo' : 'Inativo'}
+                          color={student.active ? 'success' : 'default'}
+                          size="small"
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>
         )}
       </Paper>
 
-      {/* Histórico de presenças */}
-      <Paper sx={{ p: 3 }}>
-        <Typography variant="h6" gutterBottom fontWeight="bold">
-          Histórico de Presenças
-        </Typography>
-        <Divider sx={{ mb: 2 }} />
-
-        {attendance.length === 0 ? (
-          <Typography variant="body2" color="text.secondary" textAlign="center" py={4}>
-            Nenhuma presença registrada ainda
-          </Typography>
-        ) : (
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell><strong>Aluno</strong></TableCell>
-                  <TableCell><strong>Matrícula</strong></TableCell>
-                  <TableCell><strong>Data/Hora</strong></TableCell>
-                  <TableCell align="center"><strong>Status</strong></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {attendance.slice(0, 20).map((record) => (
-                  <TableRow key={record.id} hover>
-                    <TableCell>{record.student_name}</TableCell>
-                    <TableCell>{record.registration_number}</TableCell>
-                    <TableCell>
-                      {format(
-                        new Date(record.timestamp),
-                        "dd/MM/yyyy 'às' HH:mm",
-                        { locale: ptBR }
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      <Chip
-                        label={record.recognized ? 'Presente' : 'Ausente'}
-                        color={record.recognized ? 'success' : 'error'}
-                        size="small"
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
-
-        {attendance.length > 20 && (
-          <Box textAlign="center" mt={2}>
-            <Typography variant="caption" color="text.secondary">
-              Mostrando 20 de {attendance.length} registros
-            </Typography>
-          </Box>
-        )}
-      </Paper>
+      {/* Histórico de presenças removido. Será exibido apenas na página de detalhes do aluno. */}
     </Box>
   );
 }

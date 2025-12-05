@@ -33,7 +33,7 @@ import { useAuth } from '../context/AuthContext';
 
 const drawerWidth = 260;
 
-const menuItems = [
+const menuItemsBase = [
   { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
   { text: 'Turmas', icon: <School />, path: '/classes' },
   { text: 'Alunos', icon: <Group />, path: '/students' },
@@ -66,6 +66,16 @@ export default function Layout({ children }) {
     logout();
     navigate('/login');
   };
+
+  const menuItems = React.useMemo(() => {
+    if (user && user.role === 'admin') {
+      return [
+        ...menuItemsBase,
+        { text: 'Cadastrar Professor', icon: <PersonAdd />, path: '/register-professor' },
+      ];
+    }
+    return menuItemsBase;
+  }, [user]);
 
   const drawer = (
     <Box>

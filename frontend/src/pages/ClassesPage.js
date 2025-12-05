@@ -9,7 +9,13 @@ import {
   CircularProgress,
   Alert,
   Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
   IconButton,
+  TextField,
 } from '@mui/material';
 import { Add, Group, ArrowForward } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +26,15 @@ export default function ClassesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [classToDelete, setClassToDelete] = useState(null);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newAcademicPeriod, setNewAcademicPeriod] = useState('');
+  const [newDescription, setNewDescription] = useState('');
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createError, setCreateError] = useState('');
+  const [createSuccess, setCreateSuccess] = useState(false);
 
   useEffect(() => {
     loadClasses();
@@ -39,6 +54,28 @@ export default function ClassesPage() {
       setError('Erro ao carregar turmas');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const confirmDelete = (classItem) => {
+    setClassToDelete(classItem);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!classToDelete) return;
+    try {
+      const token = localStorage.getItem('token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      await axios.delete(`${process.env.REACT_APP_API_URL}/classes/${classToDelete.id}`, { headers });
+      setDeleteDialogOpen(false);
+      setClassToDelete(null);
+      // reload list
+      loadClasses();
+    } catch (err) {
+      console.error('Erro ao remover turma:', err, err.response?.data || err.message);
+      setError('Erro ao remover turma');
+      setDeleteDialogOpen(false);
     }
   };
 
@@ -64,9 +101,9 @@ export default function ClassesPage() {
         <Button
           variant="contained"
           startIcon={<Add />}
-          onClick={() => navigate('/classes/new')}
+          onClick={() => setCreateDialogOpen(true)}
         >
-          Nova Turma
+          Adicionar Turma
         </Button>
       </Box>
 
@@ -77,14 +114,6 @@ export default function ClassesPage() {
           <Typography variant="h6" color="text.secondary" gutterBottom>
             Nenhuma turma cadastrada
           </Typography>
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            onClick={() => navigate('/classes/new')}
-            sx={{ mt: 2 }}
-          >
-            Criar Primeira Turma
-          </Button>
         </Box>
       ) : (
         <Grid container spacing={3}>
@@ -141,12 +170,108 @@ export default function ClassesPage() {
                   >
                     Ver Detalhes
                   </Button>
+                  <Button
+                    fullWidth
+                    color="error"
+                    variant="outlined"
+                    sx={{ mt: 1 }}
+                    onClick={() => confirmDelete(classItem)}
+                  >
+                    Apagar Turma
+                  </Button>
                 </Box>
               </Card>
             </Grid>
           ))}
         </Grid>
       )}
+
+      <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+        <DialogTitle>Confirmar remoção</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Tem certeza que deseja remover a turma "{classToDelete?.name}"? Isso apenas marcará a turma como inativa.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)}>Cancelar</Button>
+          <Button color="error" onClick={handleDelete}>Remover</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={createDialogOpen} onClose={() => setCreateDialogOpen(false)}>
+        <DialogTitle>Adicionar Turma</DialogTitle>
+        <DialogContent>
+          <Box component="form" sx={{ mt: 1 }}>
+            <TextField
+              label="Nome da Turma"
+              value={newName}
+              onChange={e => setNewName(e.target.value)}
+              fullWidth
+              required
+              margin="normal"
+            />
+            <TextField
+              label="Período Acadêmico"
+              value={newAcademicPeriod}
+              onChange={e => setNewAcademicPeriod(e.target.value)}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Descrição"
+              value={newDescription}
+              onChange={e => setNewDescription(e.target.value)}
+              fullWidth
+              multiline
+              rows={3}
+              margin="normal"
+            />
+            {createError && <Alert severity="error" sx={{ mt: 2 }}>{createError}</Alert>}
+            {createSuccess && <Alert severity="success" sx={{ mt: 2 }}>Turma criada com sucesso!</Alert>}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setCreateDialogOpen(false)} disabled={createLoading}>Cancelar</Button>
+          <Button
+            onClick={async () => {
+              setCreateLoading(true);
+              setCreateError('');
+              setCreateSuccess(false);
+              try {
+                const token = localStorage.getItem('token');
+                const headers = token ? { Authorization: `Bearer ${token}` } : {};
+                await axios.post(
+                  `${process.env.REACT_APP_API_URL}/classes`,
+                  {
+                    name: newName,
+                    academic_period: newAcademicPeriod,
+                    description: newDescription,
+                  },
+                  { headers }
+                );
+                setCreateSuccess(true);
+                setTimeout(() => {
+                  setCreateDialogOpen(false);
+                  setNewName('');
+                  setNewAcademicPeriod('');
+                  setNewDescription('');
+                  loadClasses();
+                }, 1200);
+              } catch (err) {
+                setCreateError(err.response?.data?.error || 'Erro ao criar turma. Tente novamente.');
+              } finally {
+                setCreateLoading(false);
+              }
+            }}
+            variant="contained"
+            color="primary"
+            disabled={createLoading || !newName}
+          >
+            {createLoading ? <CircularProgress size={24} /> : 'Adicionar Turma'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

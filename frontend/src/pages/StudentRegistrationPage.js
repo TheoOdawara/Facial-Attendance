@@ -144,14 +144,17 @@ function StudentRegistrationPage() {
               label="Turma"
               onChange={(e) => setSelectedClassId(e.target.value)}
             >
-              {classesList.length === 0 && (
-                <MenuItem value={1}>Turma Padrão</MenuItem>
-              )}
-              {classesList.map((c) => (
-                <MenuItem key={c.id} value={c.id}>
-                  {c.name} {c.academic_period ? `(${c.academic_period})` : ''}
+              {classesList.length === 0 ? (
+                <MenuItem value="" disabled>
+                  Nenhuma turma disponível. Crie uma turma antes de cadastrar alunos.
                 </MenuItem>
-              ))}
+              ) : (
+                classesList.map((c) => (
+                  <MenuItem key={c.id} value={c.id}>
+                    {c.name} {c.academic_period ? `(${c.academic_period})` : ''}
+                  </MenuItem>
+                ))
+              )}
             </Select>
           </FormControl>
 

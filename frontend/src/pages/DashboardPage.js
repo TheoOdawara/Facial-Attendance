@@ -23,6 +23,7 @@ import { ptBR } from 'date-fns/locale';
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const firstName = user?.name?.split(' ')[0] || '';
   const [stats, setStats] = useState(null);
   const [attendanceData, setAttendanceData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -111,7 +112,19 @@ export default function DashboardPage() {
       color: '#F59E0B',
     },
     {
-      title: 'Taxa de Presença',
+      title: 'Presenças Totais',
+      value: stats?.attendanceTotal || 0,
+      icon: <CheckCircle sx={{ fontSize: 40 }} />,
+      color: '#1976D2',
+    },
+    {
+      title: 'Total de Faltas',
+      value: stats?.totalAbsences || 0,
+      icon: <TrendingUp sx={{ fontSize: 40, color: '#EF4444' }} />,
+      color: '#EF4444',
+    },
+    {
+      title: 'Taxa de Presença Geral',
       value: `${stats?.attendanceRate || 0}%`,
       icon: <TrendingUp sx={{ fontSize: 40 }} />,
       color: '#8B5CF6',
@@ -121,7 +134,7 @@ export default function DashboardPage() {
   return (
     <Box>
       <Typography variant="h4" gutterBottom fontWeight="bold">
-        Bem-vindo, {user?.name}!
+        Bem-vindo, {firstName}!
       </Typography>
       <Typography variant="body1" color="text.secondary" paragraph>
         Visão geral do sistema de presença
