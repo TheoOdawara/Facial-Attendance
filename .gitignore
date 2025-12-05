@@ -38,10 +38,6 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# PostgreSQL
-*.sql
-pgdata/
-
 # Face encodings
 face_encodings.json
 
