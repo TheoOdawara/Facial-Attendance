@@ -55,7 +55,7 @@ function StudentRegistrationPage() {
     }
   };
 
-  // Carrega lista de turmas (se houver token, o axios já será configurado pelo AuthProvider)
+  // Carrega lista de turmas 
   React.useEffect(() => {
     let mounted = true;
     const loadClasses = async () => {

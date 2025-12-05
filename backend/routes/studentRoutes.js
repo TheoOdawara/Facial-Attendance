@@ -5,7 +5,7 @@ const axios = require('axios');
 const crypto = require('crypto');
 const router = express.Router();
 
-// Diagnostic: confirm module load
+
 console.log('Loaded studentRoutes module (clean)');
 router.use((req, res, next) => {
   console.log(`studentRoutes: ${req.method} ${req.path}`);

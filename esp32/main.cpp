@@ -1,3 +1,4 @@
+
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <HTTPClient.h>
@@ -6,15 +7,15 @@
 // --- Configurações Wi-Fi e MQTT ---
 #define WIFI_SSID       "Theo"
 #define WIFI_PASSWORD   "laudo1234"
-#define MQTT_SERVER     "172.20.10.2"  // IP do broker (SEM ESPAÇOS!)
+#define MQTT_SERVER     "172.20.10.2"  // IP do broker 
 #define MQTT_PORT       1883
-#define MQTT_USER       ""  // Deixe vazio se allow_anonymous true
+#define MQTT_USER       ""  
 #define MQTT_PASSWORD   ""
 #define MQTT_TOPIC_IMAGE    "facial/attendance/image"
 #define MQTT_TOPIC_CAPTURE  "facial/attendance/capture"
 bool shouldCapture = false; // Flag de controle
 
-// Backend HTTP (NOVO - bypass MQTT para imagens)
+// Backend HTTP 
 #define BACKEND_HOST    "172.20.10.2"
 #define BACKEND_PORT    3001
 
@@ -30,7 +31,7 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
     }
     if (message == "CAPTURE") {
     Serial.println("Comando recebido. Agendando captura...");
-    shouldCapture = true; // Apenas levanta a flag, NÃO chama a função pesada aqui
+    shouldCapture = true; // Apenas levanta a flag
     }
   }
 }
@@ -93,11 +94,10 @@ void connectToMqtt() {
 void captureAndSendImage() {
   camera_fb_t *fb = nullptr;
   
-  // 1. O TRUQUE DO FLUSH: Captura um frame e descarta para limpar o buffer antigo
-  // Isso garante que a próxima foto seja do momento "agora"
+  //limpa o buffer antigo
   fb = esp_camera_fb_get();
   if (fb) {
-    esp_camera_fb_return(fb); // Devolve o buffer (joga fora)
+    esp_camera_fb_return(fb); // Devolve o buffer 
     delay(400); // Pequena pausa para o sensor atualizar
   }
 
@@ -117,7 +117,7 @@ void captureAndSendImage() {
   Serial.println("Enviando para: " + url);
   
   http.begin(url);
-  http.setTimeout(20000); // Aumente para 20s para garantir
+  http.setTimeout(20000); 
   
   String boundary = "----ESP32CAMBoundary";
   http.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
@@ -184,14 +184,11 @@ void initCamera() {
   
   // Configuração otimizada: SVGA com compressão média (~10-15KB)
   if(psramFound()){
-    config.frame_size = FRAMESIZE_SVGA; // 800x600 - boa resolução
+    config.frame_size = FRAMESIZE_SVGA; // 800x600 
     config.jpeg_quality = 15; // Compressão média (15 = ~10-15KB para SVGA)
-    // Use fb_count = 1 to avoid returning a previously buffered frame
-    // which can cause sending an older image. If you need higher throughput
-    // re-enable 2 but be aware of possible stale-frame issues.
     config.fb_count = 1;
   } else {
-    config.frame_size = FRAMESIZE_HVGA; // 480x320 - maior que QVGA
+    config.frame_size = FRAMESIZE_HVGA; // 480x320 
     config.jpeg_quality = 18;
     config.fb_count = 1;
   }
@@ -267,7 +264,7 @@ void setup() {
     Serial.println("✓ Gateway acessível!");
     testGateway.stop();
   } else {
-    Serial.println("✗ Gateway inacessível! (AP Isolation do iPhone)");
+    Serial.println("✗ Gateway inacessível!");
   }
   
   delay(500);
@@ -286,11 +283,6 @@ void setup() {
     testClient.stop();
   } else {
     Serial.println("✗ FALHA na conectividade TCP!");
-    Serial.println("\n*** PROBLEMA: Hotspot do iPhone bloqueia comunicação entre dispositivos! ***");
-    Serial.println("\nSOLUÇÕES:");
-    Serial.println("  1. Use cabo USB do iPhone → PC (compartilhamento via USB)");
-    Serial.println("  2. Use um roteador Wi-Fi comum");
-    Serial.println("  3. Crie hotspot no Windows (ver criar-hotspot.ps1)");
   }
   
   delay(1000);

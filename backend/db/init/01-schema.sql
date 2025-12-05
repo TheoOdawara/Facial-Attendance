@@ -1,5 +1,4 @@
 -- Schema inicial do banco de dados para FacialAttendance
--- Schema inicial do banco de dados para FacialAttendance
 
 -- Extensão para hashing (usada em seeds para gerar bcrypt)
 CREATE EXTENSION IF NOT EXISTS pgcrypto;

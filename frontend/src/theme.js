@@ -1,16 +1,16 @@
 import { createTheme } from '@mui/material/styles';
 
-// Tema acadêmico/profissional neutro
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976D2', // Azul neutro (pode ser alterado facilmente)
+      main: '#1976D2', 
       light: '#42A5F5',
       dark: '#1565C0',
       contrastText: '#fff',
     },
     secondary: {
-      main: '#10B981', // Verde (presença/sucesso)
+      main: '#10B981', 
       light: '#34D399',
       dark: '#059669',
       contrastText: '#fff',

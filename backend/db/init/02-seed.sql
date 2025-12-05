@@ -1,4 +1,3 @@
--- Inicialização do banco para FacialAttendance
 -- Cria extensão, tabela de professors e insere/atualiza usuário admin padrão
 
 -- Habilita funções de hashing (pgcrypto) para gerar bcrypt via crypt()/gen_salt()
@@ -16,9 +15,6 @@ CREATE TABLE IF NOT EXISTS professors (
     updated_at TIMESTAMP
 );
 
--- Insere (ou atualiza) o usuário admin padrão
--- Email: sistema@facialattendance.local
--- Senha: admin1234
 INSERT INTO professors (name, email, password_hash, role)
 VALUES (
     'Sistema',

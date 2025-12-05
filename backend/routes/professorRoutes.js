@@ -19,8 +19,6 @@ const registerSchema = Joi.object({
  */
 router.post('/', async (req, res) => {
   try {
-    // Se quiser restringir só para admin, descomente:
-    // if (!req.user || req.user.role !== 'admin') return res.status(403).json({ error: 'Acesso negado.' });
 
     const { error, value } = registerSchema.validate(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
@@ -47,7 +45,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Todas as rotas requerem autenticação
+
 router.use(authMiddleware);
 
 /**
@@ -193,10 +191,7 @@ router.get('/:id/stats', async (req, res) => {
     const attendanceTotalResult = await db.query(attendanceTotalSql, [id]);
     const attendanceTotal = parseInt(attendanceTotalResult.rows[0].total);
 
-    // Total de faltas (alunos ativos - presenças registradas)
-    // Considera que cada aluno deveria ter uma presença por dia de aula
-    // Para simplificação, calcula faltas como: total possíveis presenças - presenças registradas
-    // (pode ser ajustado para considerar calendário de aulas)
+    
     const daysSql = `
       SELECT COUNT(DISTINCT DATE(a.timestamp)) as total_days
       FROM attendance a

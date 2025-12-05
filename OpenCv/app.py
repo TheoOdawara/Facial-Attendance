@@ -39,7 +39,7 @@ def save_known_faces(known_faces):
     for student_id, info in known_faces.items():
         data[student_id] = {
             'name': info['name'],
-            'encoding': info['encoding'].tolist()  # Converte numpy array para lista
+            'encoding': info['encoding'].tolist() 
         }
     with open(ENCODINGS_FILE, 'w') as f:
         json.dump(data, f)

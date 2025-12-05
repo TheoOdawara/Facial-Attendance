@@ -1,5 +1,10 @@
 # FacialAttendance
 
+INTEGRANTES DO GRUPO:
+- Theo Christiano da Silva Odawara	
+- Vinicius Larsen Santos
+- Pedro Gabry Barbosa
+
 Versão: 1.0.0
 Última modificação: 2025-11-28
 
